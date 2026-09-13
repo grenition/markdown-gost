@@ -1,35 +1,33 @@
 name: Publish
 
-# Semver tags (vX.Y.Z) publish two artifacts simultaneously:
-#   - GHCR image  ghcr.io/<owner>/<repo>:X.Y.Z  (runtime stage, CLI entrypoint,
-#     LibreOffice/unoserver included — also the base image for downstream
-#     conversion services)
-#   - PyPI package markdown-gost==X.Y.Z (via OIDC trusted publishing,
-#     no tokens stored in the repository)
-# Floating tags (latest, main) are intentionally NOT published: downstream
-# consumers pin an exact version tag.
+# Automated releases via python-semantic-release. Every push to main is
+# evaluated against conventional commits: feat -> minor, fix/perf ->
+# patch, "feat!" or a "BREAKING CHANGE" footer -> major (major_on_zero).
+# When a release is due the version is stamped (pyproject.toml +
+# __version__), a v-tag and GitHub release are created, sdist/wheel go
+# to PyPI (OIDC trusted publishing, no tokens) and the runtime image is
+# pushed to GHCR with the same tag. No floating tags, no manual bumps.
 
 on:
   push:
-    tags: ["v*.*.*"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
   id-token: write
 
+concurrency:
+  group: publish-main
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  gate:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-
-      - name: Verify tag matches project version
-        run: |
-          tag="${GITHUB_REF_NAME#v}"
-          version="$(grep -m1 '^version' pyproject.toml | sed 's/version = "\(.*\)"/\1/')"
-          test "$tag" = "$version" || { echo "tag $GITHUB_REF_NAME does not match pyproject version $version"; exit 1; }
 
       - uses: docker/setup-buildx-action@v3
 
@@ -41,22 +39,47 @@ jobs:
           target: test
           load: true
           tags: markdown-gost:test
-          cache-from: type=gha
+          cache-from: type=gha,scope=mg-tests
+          cache-to: type=gha,mode=max,scope=mg-tests
 
-      - name: Gate — full test suite must pass before publishing
+      - name: Run full test suite (unit + integration + screenshot)
         run: docker run --rm markdown-gost:test
+
+  release:
+    runs-on: ubuntu-latest
+    needs: gate
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/publish-action@v9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        if: steps.release.outputs.released == 'true'
+        with:
+          print-hash: true
+
+      - name: Upload distributions to the GitHub release
+        uses: python-semantic-release/upload-to-gh-release@v2
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push runtime image
         uses: docker/build-push-action@v6
+        if: steps.release.outputs.released == 'true'
         with:
           context: .
           file: docker/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-
-      - name: Build sdist and wheel
-        run: pipx run poetry build
-
-      - name: Publish to PyPI (trusted publishing)
-        uses: pypa/gh-action-pypi-publish@release/v1
+          tags: ghcr.io/${{ github.repository }}:${{ steps.release.outputs.tag }}
+          cache-from: type=gha,scope=mg-image
+          cache-to: type=gha,mode=max,scope=mg-image

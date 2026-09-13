@@ -29,8 +29,8 @@ jobs:
           target: test
           load: true
           tags: markdown-gost:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=mg-tests
+          cache-to: type=gha,mode=max,scope=mg-tests
 
       - name: Run full test suite (unit + integration + screenshot)
         run: docker run --rm markdown-gost:test

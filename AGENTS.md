@@ -41,3 +41,10 @@ make test-in-docker     # full suite inside the test image
 
 Write everything short: docs, comments, commit messages, code. Brevity is
 a feature, not a courtesy. Conventional commits.
+
+## Releases
+
+Automated by python-semantic-release on push to main: `feat` → minor,
+`fix`/`perf` → patch, `feat!` or a `BREAKING CHANGE` footer → major
+(even at 0.x). Versions are stamped into `pyproject.toml` and
+`__version__` automatically — never bump or tag manually.
