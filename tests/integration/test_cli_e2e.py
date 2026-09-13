@@ -14,6 +14,8 @@ from pathlib import Path
 
 import pytest
 
+import markdown_gost
+
 SAMPLE_MD = "# Заголовок\n\nПервый абзац.\n\n## Подзаголовок\n\nВторой абзац.\n"
 
 
@@ -29,7 +31,7 @@ def _run_cli(*args: str, cwd: Path) -> subprocess.CompletedProcess[str]:
 def test_cli_module_runnable_version(tmp_path: Path) -> None:
     result = _run_cli("--version", cwd=tmp_path)
     assert result.returncode == 0, result.stderr
-    assert "0.1.0" in result.stdout
+    assert markdown_gost.__version__ in result.stdout
 
 
 def test_convert_real_md_to_docx(tmp_path: Path) -> None:

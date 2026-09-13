@@ -10,4 +10,9 @@ def test_version_attribute_is_string():
 
 
 def test_version_matches_pyproject():
-    assert markdown_gost.__version__ == "0.1.0"
+    import tomllib
+    from pathlib import Path
+
+    pyproject = Path(__file__).parents[2] / "pyproject.toml"
+    version = tomllib.loads(pyproject.read_text(encoding="utf-8"))["project"]["version"]
+    assert markdown_gost.__version__ == version

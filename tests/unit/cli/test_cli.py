@@ -13,6 +13,7 @@ from unittest.mock import patch
 import pytest
 from click.testing import CliRunner
 
+import markdown_gost
 from markdown_gost.cli.__main__ import cli
 
 
@@ -53,7 +54,7 @@ def test_validate_rejects_unresolved_references(runner, tmp_path, markdown):
 def test_version_flag_prints_package_version(runner: CliRunner) -> None:
     result = runner.invoke(cli, ["--version"])
     assert result.exit_code == 0
-    assert "0.1.0" in result.stdout
+    assert markdown_gost.__version__ in result.stdout
 
 
 # --- convert ---------------------------------------------------------------
