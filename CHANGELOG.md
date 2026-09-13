@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.2.1 (2026-09-13)
+
+### Bug Fixes
+
+- **ci**: Set up buildx before pushing the runtime image
+  ([`83edc0b`](https://github.com/grenition/markdown-gost/commit/83edc0b7c34c38075f9732b5eefb64e7e5bdee1b))
+
+The gha build cache requires the buildx driver; the release job ran on the plain docker driver and
+  failed the cache export.
+
+- **tests**: Derive expected version dynamically in CLI version tests
+  ([`44eb490`](https://github.com/grenition/markdown-gost/commit/44eb4909ce476ca5b92fc9db854ef8d01bb91442))
+
+Hardcoded 0.1.0 broke on every semantic-release bump; the smoke test now compares __version__
+  against pyproject via tomllib, CLI tests assert the imported package version.
+
+
 ## v0.2.0 (2026-09-13)
 
 ### Bug Fixes
