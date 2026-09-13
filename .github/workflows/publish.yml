@@ -1,0 +1,54 @@
+name: Publish
+
+# Semver tags (vX.Y.Z) publish two artifacts simultaneously:
+#   - GHCR image  ghcr.io/<owner>/<repo>:X.Y.Z  (runtime stage, CLI entrypoint,
+#     LibreOffice/unoserver included — also the base image for downstream
+#     conversion services)
+#   - PyPI package markdown-gost==X.Y.Z (via OIDC trusted publishing,
+#     no tokens stored in the repository)
+# Floating tags (latest, main) are intentionally NOT published: downstream
+# consumers pin an exact version tag.
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build test image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: test
+          load: true
+          tags: markdown-gost:test
+          cache-from: type=gha
+
+      - name: Gate — full test suite must pass before publishing
+        run: docker run --rm markdown-gost:test
+
+      - name: Build and push runtime image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+
+      - name: Build sdist and wheel
+        run: pipx run poetry build
+
+      - name: Publish to PyPI (trusted publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
