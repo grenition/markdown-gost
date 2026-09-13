@@ -4,7 +4,6 @@ Markdown to GOST 7.32 DOCX/PDF converter with a paginated HTML preview.
 
 - [Syntax reference](skills/markdown-gost/syntax.md) — extended Markdown: tables, listings, equations, appendices, bibliography, templates
 - [Architecture](docs/architecture.md) — pipeline, config system, storage protocol, testing tiers
-- Agent skill: `npx skills add grenition/markdown-gost` (or copy `skills/markdown-gost/` into your harness skills directory)
 
 ## Install
 
@@ -53,6 +52,13 @@ html = render_preview_html(document)
 
 Object stores are not bundled: implement the `Storage` protocol and pass your
 implementation to the conversion APIs.
+
+## Agent skill
+
+```bash
+npx skills add grenition/markdown-gost          # skills.sh registry: Claude Code, Cursor, Codex, opencode, ...
+cp -r skills/markdown-gost ~/.claude/skills/    # or copy into your harness skills directory
+```
 
 ## Development
 
