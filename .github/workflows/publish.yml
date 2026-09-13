@@ -72,6 +72,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: docker/setup-buildx-action@v3
+        if: steps.release.outputs.released == 'true'
+
       - name: Build and push runtime image
         uses: docker/build-push-action@v6
         if: steps.release.outputs.released == 'true'
