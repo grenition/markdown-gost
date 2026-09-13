@@ -1,6 +1,6 @@
 # Import: маппинг DOCX/PDF → md2gost MD
 
-Нормативный контракт результата: [docs/syntax.md](syntax.md).
+Нормативный контракт результата: [skills/markdown-gost/syntax.md](../skills/markdown-gost/syntax.md).
 Импорт выдаёт только новый синтаксис, без legacy-режима.
 
 Документ описывает, что именно постпроцессор распознаёт в выводе pandoc и во что

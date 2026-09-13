@@ -1,4 +1,4 @@
-"""Context-aware extensions; normative contract: docs/syntax.md."""
+"""Context-aware extensions; normative contract: skills/markdown-gost/syntax.md."""
 
 from __future__ import annotations
 

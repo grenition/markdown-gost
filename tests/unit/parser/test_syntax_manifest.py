@@ -1,4 +1,4 @@
-"""Acceptance contract for docs/syntax.md (no legacy syntax)."""
+"""Acceptance contract for skills/markdown-gost/syntax.md (no legacy syntax)."""
 
 import pytest
 

@@ -1,4 +1,4 @@
-"""Корпус-тест: исполняемые примеры из docs/syntax.md."""
+"""Корпус-тест: исполняемые примеры из skills/markdown-gost/syntax.md."""
 
 from pathlib import Path
 
@@ -7,7 +7,7 @@ from markdown_gost.core.parser import parse
 
 
 def _find_syntax_md() -> Path:
-    """Ищем docs/syntax.md, обходя предков файла теста.
+    """Ищем skills/markdown-gost/syntax.md, обходя предков файла теста.
 
     Простой ``parents[N]`` ломается, когда тест запускается из контейнера, где
     рабочая директория и mount layout отличаются от локальной checkout-копии.
@@ -15,11 +15,11 @@ def _find_syntax_md() -> Path:
 
     here = Path(__file__).resolve()
     for ancestor in [here.parent, *here.parents]:
-        candidate = ancestor / "docs" / "syntax.md"
+        candidate = ancestor / "skills" / "markdown-gost" / "syntax.md"
         if candidate.is_file():
             return candidate
     raise FileNotFoundError(
-        "docs/syntax.md not found in any ancestor of "
+        "skills/markdown-gost/syntax.md not found in any ancestor of "
         f"{here} — # bind-mount via docker-compose.test.yml). "
         "bind-mount via docker-compose.test.yml)."
     )

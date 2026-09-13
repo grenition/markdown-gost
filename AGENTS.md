@@ -3,7 +3,7 @@
 ## Map
 
 - `src/markdown_gost/` — package (src-layout; tests run against the installed copy)
-- `docs/syntax.md` — normative syntax contract **and** executable corpus
+- `skills/markdown-gost/syntax.md` — normative syntax contract **and** executable corpus
 - `tests/` — `unit/` fast, `integration/` (unoserver/pandoc), `import/` (golden, roundtrip), `screenshot/` pixel gate
 - `docker/` — image (Dockerfile + entrypoint with unoserver)
 - `skills/markdown-gost/` — installable agent skill (see sync test)
@@ -21,7 +21,7 @@ make test-in-docker     # full suite inside the test image
 
 ## Rules
 
-1. Syntax changes: update `docs/syntax.md` and the acceptance tests FIRST,
+1. Syntax changes: update `skills/markdown-gost/syntax.md` and the acceptance tests FIRST,
    then the parser. Fenced `markdown` blocks in that file are parsed by
    `tests/unit/parser/test_full_corpus.py` — a construct without a live
    example there is not covered.
@@ -35,7 +35,7 @@ make test-in-docker     # full suite inside the test image
    inline payloads.
 5. Tests before implementation; unit + lint + typecheck green before done.
 6. `skills/markdown-gost/syntax.md` must stay identical to
-   `docs/syntax.md` (enforced by a unit test).
+   `skills/markdown-gost/syntax.md` (enforced by a unit test).
 
 ## Style
 

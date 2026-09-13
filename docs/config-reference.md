@@ -41,7 +41,7 @@ overrides:
 | `bibliography` | `Bibliography` | Библиографические ссылки и список источников |
 
 > Параметры шаблонов (титульник, оглавление) **не** живут в конфиге — они
-> задаются в самой markdown-директиве, см. `docs/syntax.md` и
+> задаются в самой markdown-директиве, см. `skills/markdown-gost/syntax.md` и
 > `docs/templates-guide.md`.
 
 ## `page`
