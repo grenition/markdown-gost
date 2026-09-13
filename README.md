@@ -22,7 +22,7 @@ fonts-dejavu` (macOS: `brew install fontconfig font-liberation`).
 Docker image with LibreOffice, unoserver, pandoc and fonts included:
 
 ```bash
-docker run --rm -v "$PWD":/work -w /work ghcr.io/grenition/markdown-gost:0.2.0 \
+docker run --rm -v "$PWD":/work -w /work ghcr.io/grenition/markdown-gost:0.2.2 \
   convert paper.md -o paper.docx
 ```
 
