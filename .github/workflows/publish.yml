@@ -67,7 +67,7 @@ jobs:
           print-hash: true
 
       - name: Upload distributions to the GitHub release
-        uses: python-semantic-release/upload-to-gh-release@v2
+        uses: python-semantic-release/upload-to-gh-release@v9.8.9
         if: steps.release.outputs.released == 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
