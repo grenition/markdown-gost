@@ -26,6 +26,13 @@ docker run --rm -v "$PWD":/work -w /work ghcr.io/grenition/markdown-gost:0.1.0 \
   convert paper.md -o paper.docx
 ```
 
+## Agent skill
+
+```bash
+npx skills add grenition/markdown-gost          # skills.sh registry: Claude Code, Cursor, Codex, opencode, ...
+cp -r skills/markdown-gost ~/.claude/skills/    # or copy into your harness skills directory
+```
+
 ## Commands
 
 ```bash
@@ -52,13 +59,6 @@ html = render_preview_html(document)
 
 Object stores are not bundled: implement the `Storage` protocol and pass your
 implementation to the conversion APIs.
-
-## Agent skill
-
-```bash
-npx skills add grenition/markdown-gost          # skills.sh registry: Claude Code, Cursor, Codex, opencode, ...
-cp -r skills/markdown-gost ~/.claude/skills/    # or copy into your harness skills directory
-```
 
 ## Development
 
