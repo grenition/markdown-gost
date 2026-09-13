@@ -1,21 +1,23 @@
 # markdown-gost — single multi-stage image.
 #
+# Build from the repository root (the context needs docker/ + src/ + tests/):
+#   docker build -f docker/Dockerfile -t markdown-gost:local .
+#
 # Stages:
-#   base    — python 3.13 + LibreOffice + fonts + pandoc + unoserver (system layer)
+#   base    — python 3.13 + LibreOffice Writer + fonts + pandoc + unoserver
 #   deps    — base + production dependencies from the lock file
-#   test    — base + dev dependencies + playwright + tests (CI / make test-in-docker)
+#   test    — deps + dev dependencies + playwright + tests
 #   runtime — deps + installed markdown_gost package + CLI entrypoint
-#             (default target: plain `docker build .` yields the CLI image)
+#             (default target: plain `docker build` yields the CLI image)
 #
 # The image is dual-purpose: OSS users get a fully-working converter out of
 # the box (PDF included), and downstream conversion services use it as a
 # base image so the engine, fonts and LibreOffice stay in rendering parity
 # with CI.
-
 ARG PYTHON_BASE=python:3.13.15-slim-bookworm@sha256:ed86c82274b3c69b52fb5820f358f0bd7df0b603332063cb5c6e32bd220c3e6e
 
 # ============================================================================
-# base — system libs, LibreOffice, fonts, pandoc, unoserver
+# base — system layer
 # ============================================================================
 FROM ${PYTHON_BASE} AS base
 
@@ -30,17 +32,18 @@ ENV DEBIAN_FRONTEND=noninteractive \
     UNOSERVER_PORT=2003 \
     UNOSERVER_UNO_PORT=2002
 
+# ForceIPv4 + a small retry loop: BuildKit networking occasionally drops
+# connections to deb.debian.org mid-fetch and apt's internal retries do
+# not always recover.
 ARG APT_OPTS="-o Acquire::ForceIPv4=true -o Acquire::Retries=10 -o Acquire::http::Pipeline-Depth=0 -o Acquire::http::No-Cache=true -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
 
 RUN set -eux; \
     success=0; \
-    for i in 1 2 3 4 5 6 7 8; do \
+    for i in 1 2 3; do \
         apt-get $APT_OPTS update && \
         apt-get $APT_OPTS install -y --no-install-recommends \
             libreoffice-core \
             libreoffice-writer \
-            libreoffice-impress \
-            libreoffice-calc \
             libreoffice-math \
             python3-uno \
             python3-pip \
@@ -55,21 +58,17 @@ RUN set -eux; \
             ca-certificates \
             tini \
             netcat-openbsd \
-            make \
         && { success=1; break; } \
-        || { echo "apt attempt $i failed, retrying after cleanup..."; \
+        || { echo "apt attempt $i failed, retrying..."; \
              apt-get $APT_OPTS -f install -y || true; \
              sleep $((i * 5)); }; \
     done; \
-    [ "$success" = "1" ] || { echo "apt install failed after 8 attempts"; exit 1; }; \
+    [ "$success" = "1" ] || { echo "apt install failed after 3 attempts"; exit 1; }; \
     /usr/lib/libreoffice/program/soffice.bin --version > /dev/null; \
-    /usr/bin/python3 --version > /dev/null; \
     rm -rf /var/lib/apt/lists/*
 
-# pandoc — install from upstream .deb so the version is deterministic.
-# Debian bookworm only ships 2.17.x in apt, which is older than the 2.19
-# baseline the DOCX import pipeline needs. Pin the official release
-# package checksum per supported architecture before installing it.
+# pandoc — deterministic upstream .deb with a pinned checksum per arch.
+# Debian bookworm ships 2.17.x in apt; the import pipeline needs >= 2.19.
 ARG PANDOC_VERSION=3.1.13
 ARG PANDOC_SHA256_AMD64=b51029afd2e302679aabb9464cd96bda378145d48bb853bd32d93c57b93a293d
 ARG PANDOC_SHA256_ARM64=960c88d7286e8a4b4c438f6fac6b6d7ea8f1db7b255ba1f99a30ff8cd466dd40
@@ -85,16 +84,11 @@ RUN set -eux; \
     echo "${pandoc_sha256}  /tmp/pandoc.deb" | sha256sum -c -; \
     dpkg -i /tmp/pandoc.deb; \
     rm /tmp/pandoc.deb; \
-    pandoc_ver=$(pandoc --version | awk 'NR==1{print $2}'); \
-    pandoc_major=$(echo "$pandoc_ver" | cut -d. -f1); \
-    pandoc_minor=$(echo "$pandoc_ver" | cut -d. -f2); \
-    if [ "$pandoc_major" -lt 2 ] || { [ "$pandoc_major" -eq 2 ] && [ "$pandoc_minor" -lt 19 ]; }; then \
-        echo "pandoc $pandoc_ver is too old; need >=2.19"; exit 1; \
-    fi
+    pandoc --version | head -1 | grep -q 'pandoc 3\.' || { echo "pandoc version check failed"; exit 1; }
 
-# unoserver must run on the same Python that has the uno bindings (system
-# python3.11 from python3-uno). Our app runs on python3.13 from the base image
-# and talks to unoserver over XML-RPC at 127.0.0.1:2003.
+# unoserver must run on the system Python that has the uno bindings
+# (python3.11 from python3-uno). The app runs on python3.13 and talks to
+# unoserver over XML-RPC at 127.0.0.1:2003.
 RUN /usr/bin/python3 -m pip install --no-cache-dir --break-system-packages \
         "unoserver==3.2"
 
@@ -103,7 +97,7 @@ RUN pip install --no-cache-dir "poetry>=2.0,<3"
 WORKDIR /app
 
 # ============================================================================
-# deps — production python deps
+# deps — production python deps from the lock file
 # ============================================================================
 FROM base AS deps
 
@@ -111,15 +105,11 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --without dev
 
 # ============================================================================
-# test — dev deps + playwright + tests (used by CI and make test-in-docker)
+# test — dev deps + playwright + tests (CI / make test-in-docker)
 # ============================================================================
-FROM base AS test
+FROM deps AS test
 
-COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
-
-# Screenshot tests render HTML through Playwright. Keep the browser and its
-# system dependencies in the test-only stage.
 RUN playwright install --with-deps chromium
 
 COPY src ./src
@@ -148,7 +138,6 @@ FROM deps AS runtime
 
 COPY src ./src
 COPY README.md ./
-
 RUN poetry install --only-root
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh

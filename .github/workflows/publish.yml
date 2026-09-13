@@ -31,6 +31,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: docker/Dockerfile
           target: test
           load: true
           tags: markdown-gost:test
@@ -43,6 +44,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: docker/Dockerfile
           platforms: linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}

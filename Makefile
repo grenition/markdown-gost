@@ -78,11 +78,11 @@ IMAGE ?= markdown-gost:local
 TEST_IMAGE ?= markdown-gost:test
 
 build:
-	docker build -t $(IMAGE) .
+	docker build -f docker/Dockerfile -t $(IMAGE) .
 
 # Full test suite inside the test image: the entrypoint starts unoserver
 # (LibreOffice) before pytest, so integration and screenshot tests run
 # against the same rendering stack that ships to production.
 test-in-docker:
-	docker build --target test -t $(TEST_IMAGE) .
+	docker build -f docker/Dockerfile --target test -t $(TEST_IMAGE) .
 	docker run --rm $(TEST_IMAGE)
