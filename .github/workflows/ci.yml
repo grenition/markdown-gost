@@ -18,6 +18,16 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages (conventional commits)
+        if: github.event_name == 'pull_request'
+        run: |
+          for c in $(git rev-list --no-merges origin/main..HEAD); do
+            git log -1 --format=%s "$c" > /tmp/msg
+            sh .githooks/commit-msg /tmp/msg
+          done
 
       - uses: docker/setup-buildx-action@v3
 

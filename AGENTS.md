@@ -40,7 +40,8 @@ make test-in-docker     # full suite inside the test image
 ## Style
 
 Write everything short: docs, comments, commit messages, code. Brevity is
-a feature, not a courtesy. Conventional commits.
+a feature, not a courtesy. Conventional commits — enforced by the
+commit-msg hook (`make install` enables it) and re-checked by CI on PRs.
 
 ## Releases
 

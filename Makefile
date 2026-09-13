@@ -1,11 +1,14 @@
-.PHONY: install lint typecheck format test test-unit test-integration \
+.PHONY: install hooks lint typecheck format test test-unit test-integration \
         test-screenshot test-html-calibration test-import-golden \
         test-import-roundtrip test-import-smoke import-golden-baseline \
         screenshot-baseline smoke build test-in-docker
 
 # ---- local (poetry) ---------------------------------------------------------
 
-install:
+hooks:
+	git config core.hooksPath .githooks
+
+install: hooks
 	poetry install
 
 lint:
