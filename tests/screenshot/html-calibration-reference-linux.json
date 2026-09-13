@@ -1,0 +1,626 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-07-20",
+  "platform": "GitHub Actions ubuntu-24.04",
+  "oracle": "committed expected.pdf files rendered by canonical DOCX-to-PDF pipeline",
+  "browser": "Playwright Chromium 149.0.7827.55 (chromium v1228)",
+  "metric": {
+    "raw": "non-identical RGB pixels after resizing actual to expected dimensions",
+    "layout": "union of unmatched luminance<245 ink pixels with a 1px antialias neighborhood",
+    "ink_luminance_threshold": 245,
+    "antialias_tolerance_radius_px": 1
+  },
+  "thresholds": {
+    "aggregate_relative": 0.1,
+    "aggregate_absolute": 0.0001,
+    "raw_aggregate_relative": 0.05,
+    "raw_aggregate_absolute": 0.001,
+    "case_relative": 0.15,
+    "case_absolute": 0.0003,
+    "worst_page_relative": 0.1,
+    "worst_page_absolute": 0.0002,
+    "page_relative": 0.15,
+    "page_absolute": 0.0003
+  },
+  "aggregate": {
+    "expected_pages": 48,
+    "actual_pages": 48,
+    "page_count_mismatches": 0,
+    "raw_differing_pixels": 1212993,
+    "differing_pixels": 424511,
+    "compared_pixels": 46444320,
+    "differing_rate": 0.00914021,
+    "worst_case_rate": 0.0218729,
+    "worst_page_rate": 0.02894511
+  },
+  "cases": [
+    {
+      "case": "01-basic-paragraphs",
+      "expected_pages": 1,
+      "differing_pixels": 18556,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01917754,
+      "worst_page_rate": 0.01917754,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 18556,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01917754
+        }
+      ]
+    },
+    {
+      "case": "01a-config-paragraph",
+      "expected_pages": 1,
+      "differing_pixels": 3430,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00354489,
+      "worst_page_rate": 0.00354489,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3430,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00354489
+        }
+      ]
+    },
+    {
+      "case": "02-headings",
+      "expected_pages": 3,
+      "differing_pixels": 10873,
+      "compared_pixels": 2902770,
+      "differing_rate": 0.00374573,
+      "worst_page_rate": 0.00586199,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 2152,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00222408
+        },
+        {
+          "page": 2,
+          "differing_pixels": 5672,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00586199
+        },
+        {
+          "page": 3,
+          "differing_pixels": 3049,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00315113
+        }
+      ]
+    },
+    {
+      "case": "02a-config-headings",
+      "expected_pages": 2,
+      "differing_pixels": 13375,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.0069115,
+      "worst_page_rate": 0.01097882,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 10623,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01097882
+        },
+        {
+          "page": 2,
+          "differing_pixels": 2752,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00284418
+        }
+      ]
+    },
+    {
+      "case": "03-page-break",
+      "expected_pages": 3,
+      "differing_pixels": 4809,
+      "compared_pixels": 2902770,
+      "differing_rate": 0.00165669,
+      "worst_page_rate": 0.00257444,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 1149,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00118749
+        },
+        {
+          "page": 2,
+          "differing_pixels": 2491,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00257444
+        },
+        {
+          "page": 3,
+          "differing_pixels": 1169,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00120816
+        }
+      ]
+    },
+    {
+      "case": "03a-config-page",
+      "expected_pages": 2,
+      "differing_pixels": 14364,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00742257,
+      "worst_page_rate": 0.01289699,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 12479,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01289699
+        },
+        {
+          "page": 2,
+          "differing_pixels": 1885,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00194814
+        }
+      ]
+    },
+    {
+      "case": "04-lists",
+      "expected_pages": 4,
+      "differing_pixels": 69286,
+      "compared_pixels": 3870360,
+      "differing_rate": 0.01790169,
+      "worst_page_rate": 0.02556765,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 19109,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01974907
+        },
+        {
+          "page": 2,
+          "differing_pixels": 16791,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01735342
+        },
+        {
+          "page": 3,
+          "differing_pixels": 24739,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02556765
+        },
+        {
+          "page": 4,
+          "differing_pixels": 8647,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00893664
+        }
+      ]
+    },
+    {
+      "case": "05-images",
+      "expected_pages": 2,
+      "differing_pixels": 7263,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00375314,
+      "worst_page_rate": 0.00412881,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3995,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00412881
+        },
+        {
+          "page": 2,
+          "differing_pixels": 3268,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00337746
+        }
+      ]
+    },
+    {
+      "case": "05b-images-sized",
+      "expected_pages": 1,
+      "differing_pixels": 5839,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00603458,
+      "worst_page_rate": 0.00603458,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 5839,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00603458
+        }
+      ]
+    },
+    {
+      "case": "05c-config-caption-image",
+      "expected_pages": 1,
+      "differing_pixels": 5129,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0053008,
+      "worst_page_rate": 0.0053008,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 5129,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0053008
+        }
+      ]
+    },
+    {
+      "case": "06-tables-simple",
+      "expected_pages": 1,
+      "differing_pixels": 7134,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00737296,
+      "worst_page_rate": 0.00737296,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 7134,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00737296
+        }
+      ]
+    },
+    {
+      "case": "06a-tables-explicit-widths",
+      "expected_pages": 1,
+      "differing_pixels": 13119,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01355843,
+      "worst_page_rate": 0.01355843,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13119,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01355843
+        }
+      ]
+    },
+    {
+      "case": "06b-tables-mixed-auto",
+      "expected_pages": 1,
+      "differing_pixels": 13922,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01438833,
+      "worst_page_rate": 0.01438833,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13922,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01438833
+        }
+      ]
+    },
+    {
+      "case": "06c-tables-spacing",
+      "expected_pages": 1,
+      "differing_pixels": 8362,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00864209,
+      "worst_page_rate": 0.00864209,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 8362,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00864209
+        }
+      ]
+    },
+    {
+      "case": "06d-tables-flattened-colspan",
+      "expected_pages": 1,
+      "differing_pixels": 3981,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00411435,
+      "worst_page_rate": 0.00411435,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3981,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00411435
+        }
+      ]
+    },
+    {
+      "case": "06e-tables-cell-slash",
+      "expected_pages": 1,
+      "differing_pixels": 6624,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00684587,
+      "worst_page_rate": 0.00684587,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 6624,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00684587
+        }
+      ]
+    },
+    {
+      "case": "06f-import-html-table-roundtrip",
+      "expected_pages": 1,
+      "differing_pixels": 8137,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00840955,
+      "worst_page_rate": 0.00840955,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 8137,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00840955
+        }
+      ]
+    },
+    {
+      "case": "07c-tables-no-bold-header",
+      "expected_pages": 1,
+      "differing_pixels": 17090,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01766244,
+      "worst_page_rate": 0.01766244,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 17090,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01766244
+        }
+      ]
+    },
+    {
+      "case": "07f-tables-alignment",
+      "expected_pages": 1,
+      "differing_pixels": 16619,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01717566,
+      "worst_page_rate": 0.01717566,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 16619,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01717566
+        }
+      ]
+    },
+    {
+      "case": "08-listing-plain",
+      "expected_pages": 1,
+      "differing_pixels": 4124,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00426214,
+      "worst_page_rate": 0.00426214,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 4124,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00426214
+        }
+      ]
+    },
+    {
+      "case": "09-listing-highlighted",
+      "expected_pages": 1,
+      "differing_pixels": 13584,
+      "compared_pixels": 967590,
+      "differing_rate": 0.014039,
+      "worst_page_rate": 0.014039,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13584,
+          "compared_pixels": 967590,
+          "differing_rate": 0.014039
+        }
+      ]
+    },
+    {
+      "case": "11-equations-inline",
+      "expected_pages": 1,
+      "differing_pixels": 18192,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01880135,
+      "worst_page_rate": 0.01880135,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 18192,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01880135
+        }
+      ]
+    },
+    {
+      "case": "12-equations-block",
+      "expected_pages": 1,
+      "differing_pixels": 3793,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00392005,
+      "worst_page_rate": 0.00392005,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3793,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00392005
+        }
+      ]
+    },
+    {
+      "case": "12a-equations-config-no-parens",
+      "expected_pages": 1,
+      "differing_pixels": 2080,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00214967,
+      "worst_page_rate": 0.00214967,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 2080,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00214967
+        }
+      ]
+    },
+    {
+      "case": "13-equations-complex",
+      "expected_pages": 1,
+      "differing_pixels": 21164,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0218729,
+      "worst_page_rate": 0.0218729,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 21164,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0218729
+        }
+      ]
+    },
+    {
+      "case": "14-template-titlepage",
+      "expected_pages": 2,
+      "differing_pixels": 21098,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.01090235,
+      "worst_page_rate": 0.02015833,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 19505,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02015833
+        },
+        {
+          "page": 2,
+          "differing_pixels": 1593,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00164636
+        }
+      ]
+    },
+    {
+      "case": "15-template-content",
+      "expected_pages": 5,
+      "differing_pixels": 42478,
+      "compared_pixels": 4837950,
+      "differing_rate": 0.00878017,
+      "worst_page_rate": 0.02894511,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 28007,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02894511
+        },
+        {
+          "page": 2,
+          "differing_pixels": 4395,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00454221
+        },
+        {
+          "page": 3,
+          "differing_pixels": 6557,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00677663
+        },
+        {
+          "page": 4,
+          "differing_pixels": 1374,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00142002
+        },
+        {
+          "page": 5,
+          "differing_pixels": 2145,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00221685
+        }
+      ]
+    },
+    {
+      "case": "15b-gost-headings",
+      "expected_pages": 4,
+      "differing_pixels": 17001,
+      "compared_pixels": 3870360,
+      "differing_rate": 0.00439261,
+      "worst_page_rate": 0.01093232,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 2712,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00280284
+        },
+        {
+          "page": 2,
+          "differing_pixels": 10578,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01093232
+        },
+        {
+          "page": 3,
+          "differing_pixels": 2165,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00223752
+        },
+        {
+          "page": 4,
+          "differing_pixels": 1546,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00159778
+        }
+      ]
+    },
+    {
+      "case": "15e-gost-lists",
+      "expected_pages": 1,
+      "differing_pixels": 19870,
+      "compared_pixels": 967590,
+      "differing_rate": 0.02053556,
+      "worst_page_rate": 0.02053556,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 19870,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02053556
+        }
+      ]
+    },
+    {
+      "case": "15f-gost-equations",
+      "expected_pages": 1,
+      "differing_pixels": 13215,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01365764,
+      "worst_page_rate": 0.01365764,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13215,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01365764
+        }
+      ]
+    }
+  ]
+}

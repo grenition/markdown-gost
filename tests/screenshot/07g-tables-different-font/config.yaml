@@ -1,0 +1,6 @@
+preset: default
+overrides:
+  font:
+    family: Arial
+    size: 11pt
+    line_spacing: 1.15

@@ -1,0 +1,4 @@
+tolerance_pixels: 300
+dpi: 100
+html_enabled: false
+html_known_broken: preview model does not split manual listing continuation chunks yet

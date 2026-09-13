@@ -1,0 +1,9 @@
+# T040 smoke case: курсовая работа МИРЭА.
+# Фикстура input.docx не коммитится — см. ../README.md.
+min_chars: 3000
+max_fallbacks: 20
+must_contain:
+  - "Введение"
+must_have_at_least:
+  headings: 3
+  tables: 1

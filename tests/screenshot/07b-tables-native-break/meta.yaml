@@ -1,0 +1,4 @@
+tolerance_pixels: 200
+dpi: 100
+html_enabled: false
+html_known_broken: preview model does not mirror LibreOffice native table page breaks yet

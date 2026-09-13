@@ -1,0 +1,41 @@
+# Keep the build context small and reproducible.
+
+# VCS / IDE
+.git
+.gitignore
+.gitattributes
+.idea
+.vscode
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+.coverage.*
+htmlcov
+*.egg-info
+dist
+build
+
+# Virtualenvs
+.venv
+venv
+env
+
+# Local artefacts
+data
+out
+tests/screenshot/_report.pdf
+tests/screenshot/_artifacts
+
+# Docker
+docker-compose.override.yml
+
+# Misc
+*.log
+.DS_Store

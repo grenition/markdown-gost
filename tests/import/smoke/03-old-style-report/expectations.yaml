@@ -1,0 +1,8 @@
+# T040 smoke case: отчёт «старого стиля» — много ручного форматирования,
+# таблицы, листинги. Самый тяжёлый кейс для импорта.
+# Фикстура input.docx не коммитится — см. ../README.md.
+min_chars: 2000
+max_fallbacks: 30
+must_contain: []
+must_have_at_least:
+  headings: 2

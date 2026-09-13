@@ -1,0 +1,18 @@
+preset: default
+overrides:
+  headings:
+    numbering: none
+    levels:
+      1:
+        uppercase: true
+        alignment: center
+        bold: true
+        size: 16pt
+      2:
+        italic: true
+        alignment: left
+        size: 14pt
+      3:
+        bold: false
+        italic: true
+        alignment: left

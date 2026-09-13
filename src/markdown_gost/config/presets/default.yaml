@@ -1,0 +1,94 @@
+page:
+  size: A4
+  orientation: portrait
+  margins:
+    top: 2cm
+    right: 1cm
+    bottom: 1.25cm
+    left: 2.5cm
+
+font:
+  family: Times New Roman
+  size: 14pt
+  line_spacing: 1.5
+
+paragraph:
+  alignment: justify
+  indent_first_line: 1.25cm
+
+headings:
+  numbering: continuous
+  leading_space_in_numbered: true
+  levels:
+    1:
+      size: 14pt
+      bold: true
+      uppercase: true
+      alignment: left
+      space_before: 0pt
+      space_after: 0pt
+      page_break_before: true
+      keep_with_next: true
+      indent_first_line: 1.25cm
+    2:
+      size: 14pt
+      bold: true
+      alignment: left
+      space_before: 12pt
+      space_after: 0pt
+      keep_with_next: true
+      indent_first_line: 1.25cm
+    3:
+      size: 14pt
+      bold: true
+      alignment: left
+      space_before: 12pt
+      space_after: 0pt
+      keep_with_next: true
+      indent_first_line: 1.25cm
+
+captions:
+  image:
+    italic: false
+    bold: false
+    alignment: center
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+  table:
+    italic: false
+    bold: false
+    alignment: left
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+  listing:
+    italic: false
+    bold: false
+    alignment: left
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+
+table:
+  repeat_header_on_break: true
+  space_before: 0pt
+  space_after: 12pt
+
+listing:
+  syntax_highlighting: false
+  font:
+    family: Consolas
+    size: 12pt
+  line_spacing: 1.0
+  space_before: 0pt
+  space_after: 12pt
+
+lists:
+  bullet_marker: "—"
+  indent_left: 1.25cm
+  indent_first_line: 0cm
+
+equation:
+  numbering_alignment: right
+  parentheses: true

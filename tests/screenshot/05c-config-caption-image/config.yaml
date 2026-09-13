@@ -1,0 +1,10 @@
+preset: default
+overrides:
+  captions:
+    image:
+      italic: true
+      bold: false
+      alignment: left
+      format: "Рис. {number}. {text}"
+      space_before: 0pt
+      space_after: 24pt

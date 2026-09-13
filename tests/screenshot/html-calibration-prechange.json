@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "phase": "pre-change",
+  "captured_on": "2026-07-19",
+  "oracle": "committed expected.pdf files rendered by canonical DOCX-to-PDF pipeline",
+  "browser": "Playwright Chromium 149.0.7827.55 (chromium v1228)",
+  "case_set": {
+    "initial_html_enabled_cases": 24,
+    "selected_expansion_cases": [
+      "07c-tables-no-bold-header",
+      "15b-gost-headings",
+      "15e-gost-lists",
+      "15f-gost-equations"
+    ]
+  },
+  "metric": {
+    "raw": "non-identical RGB pixels after resizing actual to expected dimensions",
+    "layout": "union of unmatched luminance<245 ink pixels with a 1px antialias neighborhood",
+    "ink_luminance_threshold": 245,
+    "antialias_tolerance_radius_px": 1
+  },
+  "aggregate": {
+    "expected_pages": 41,
+    "actual_pages": 41,
+    "page_count_mismatches": 0,
+    "raw_differing_pixels": 1091360,
+    "differing_pixels": 568715,
+    "compared_pixels": 39671190,
+    "differing_rate": 0.01433572,
+    "worst_case_rate": 0.03412396,
+    "worst_page_rate": 0.03725338
+  },
+  "cases": [
+    {"case":"01-basic-paragraphs","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":49321,"differing_pixels":19968,"compared_pixels":967590,"differing_rate":0.02063684,"worst_page_rate":0.02063684},
+    {"case":"01a-config-paragraph","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":27816,"differing_pixels":12753,"compared_pixels":967590,"differing_rate":0.01318017,"worst_page_rate":0.01318017},
+    {"case":"02-headings","expected_pages":3,"actual_pages":3,"page_count_mismatch":false,"raw_differing_pixels":38669,"differing_pixels":18081,"compared_pixels":2902770,"differing_rate":0.00622888,"worst_page_rate":0.00886429},
+    {"case":"02a-config-headings","expected_pages":2,"actual_pages":2,"page_count_mismatch":false,"raw_differing_pixels":18356,"differing_pixels":2446,"compared_pixels":1935180,"differing_rate":0.00126397,"worst_page_rate":0.00159675},
+    {"case":"03-page-break","expected_pages":3,"actual_pages":3,"page_count_mismatch":false,"raw_differing_pixels":20096,"differing_pixels":9569,"compared_pixels":2902770,"differing_rate":0.00329651,"worst_page_rate":0.00463109},
+    {"case":"03a-config-page","expected_pages":2,"actual_pages":2,"page_count_mismatch":false,"raw_differing_pixels":48561,"differing_pixels":22331,"compared_pixels":1935180,"differing_rate":0.01153950,"worst_page_rate":0.01969429},
+    {"case":"04-lists","expected_pages":4,"actual_pages":4,"page_count_mismatch":false,"raw_differing_pixels":173444,"differing_pixels":92870,"compared_pixels":3870360,"differing_rate":0.02399518,"worst_page_rate":0.03725338},
+    {"case":"05-images","expected_pages":2,"actual_pages":2,"page_count_mismatch":false,"raw_differing_pixels":47586,"differing_pixels":15477,"compared_pixels":1935180,"differing_rate":0.00799771,"worst_page_rate":0.01046208},
+    {"case":"05b-images-sized","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":32676,"differing_pixels":11093,"compared_pixels":967590,"differing_rate":0.01146457,"worst_page_rate":0.01146457},
+    {"case":"05c-config-caption-image","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":27415,"differing_pixels":10035,"compared_pixels":967590,"differing_rate":0.01037113,"worst_page_rate":0.01037113},
+    {"case":"06-tables-simple","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":32668,"differing_pixels":18539,"compared_pixels":967590,"differing_rate":0.01915997,"worst_page_rate":0.01915997},
+    {"case":"06a-tables-explicit-widths","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":39111,"differing_pixels":21547,"compared_pixels":967590,"differing_rate":0.02226873,"worst_page_rate":0.02226873},
+    {"case":"06b-tables-mixed-auto","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":43789,"differing_pixels":24052,"compared_pixels":967590,"differing_rate":0.02485764,"worst_page_rate":0.02485764},
+    {"case":"06c-tables-spacing","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":36486,"differing_pixels":20479,"compared_pixels":967590,"differing_rate":0.02116496,"worst_page_rate":0.02116496},
+    {"case":"06d-tables-flattened-colspan","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":22844,"differing_pixels":12598,"compared_pixels":967590,"differing_rate":0.01301998,"worst_page_rate":0.01301998},
+    {"case":"06e-tables-cell-slash","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":26051,"differing_pixels":13759,"compared_pixels":967590,"differing_rate":0.01421987,"worst_page_rate":0.01421987},
+    {"case":"06f-import-html-table-roundtrip","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":29984,"differing_pixels":17396,"compared_pixels":967590,"differing_rate":0.01797869,"worst_page_rate":0.01797869},
+    {"case":"07c-tables-no-bold-header","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":57316,"differing_pixels":33018,"compared_pixels":967590,"differing_rate":0.03412396,"worst_page_rate":0.03412396},
+    {"case":"07f-tables-alignment","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":51204,"differing_pixels":29064,"compared_pixels":967590,"differing_rate":0.03003752,"worst_page_rate":0.03003752},
+    {"case":"08-listing-plain","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":19009,"differing_pixels":13665,"compared_pixels":967590,"differing_rate":0.01412272,"worst_page_rate":0.01412272},
+    {"case":"09-listing-highlighted","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":27131,"differing_pixels":21270,"compared_pixels":967590,"differing_rate":0.02198245,"worst_page_rate":0.02198245},
+    {"case":"11-equations-inline","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":27439,"differing_pixels":19750,"compared_pixels":967590,"differing_rate":0.02041154,"worst_page_rate":0.02041154},
+    {"case":"12-equations-block","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":6844,"differing_pixels":4654,"compared_pixels":967590,"differing_rate":0.00480989,"worst_page_rate":0.00480989},
+    {"case":"12a-equations-config-no-parens","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":9441,"differing_pixels":6010,"compared_pixels":967590,"differing_rate":0.00621131,"worst_page_rate":0.00621131},
+    {"case":"13-equations-complex","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":31654,"differing_pixels":23462,"compared_pixels":967590,"differing_rate":0.02424787,"worst_page_rate":0.02424787},
+    {"case":"15b-gost-headings","expected_pages":4,"actual_pages":4,"page_count_mismatch":false,"raw_differing_pixels":62516,"differing_pixels":29759,"compared_pixels":3870360,"differing_rate":0.00768895,"worst_page_rate":0.01676537},
+    {"case":"15e-gost-lists","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":55971,"differing_pixels":24044,"compared_pixels":967590,"differing_rate":0.02484937,"worst_page_rate":0.02484937},
+    {"case":"15f-gost-equations","expected_pages":1,"actual_pages":1,"page_count_mismatch":false,"raw_differing_pixels":27962,"differing_pixels":21026,"compared_pixels":967590,"differing_rate":0.02173028,"worst_page_rate":0.02173028}
+  ]
+}

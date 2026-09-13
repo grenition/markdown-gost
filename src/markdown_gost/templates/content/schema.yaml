@@ -1,0 +1,30 @@
+groups:
+  - id: main
+    label: "Основное"
+    order: 10
+fields:
+  title:
+    type: str
+    default: "СОДЕРЖАНИЕ"
+    ui:
+      label: "Заголовок оглавления"
+      description: "Текст заголовка перед TOC; пустая строка — не выводить заголовок"
+      group: main
+      order: 5
+  depth:
+    type: int
+    default: 6
+    ui:
+      label: "Глубина оглавления"
+      description: "До какого уровня заголовков включать в оглавление"
+      group: main
+      order: 10
+  dot_leader:
+    type: bool
+    default: true
+    ui:
+      label: "Точечный заполнитель"
+      description: "Рисовать ли точки между текстом заголовка и номером страницы"
+      group: main
+      order: 20
+strict: true

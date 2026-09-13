@@ -1,0 +1,124 @@
+page:
+  size: A4
+  orientation: portrait
+  margins:
+    top: 20mm
+    right: 15mm
+    bottom: 20mm
+    left: 30mm
+
+font:
+  family: Times New Roman
+  size: 14pt
+  line_spacing: 1.5
+
+paragraph:
+  alignment: justify
+  indent_first_line: 1.25cm
+
+headings:
+  numbering: continuous
+  leading_space_in_numbered: true
+  levels:
+    1:
+      size: 14pt
+      bold: true
+      italic: false
+      uppercase: false
+      alignment: left
+      space_before: 0pt
+      space_after: 0pt
+      page_break_before: true
+      keep_with_next: true
+      indent_first_line: 1.25cm
+    2:
+      size: 14pt
+      bold: true
+      italic: false
+      uppercase: false
+      alignment: left
+      space_before: 0pt
+      space_after: 0pt
+      page_break_before: false
+      keep_with_next: true
+      indent_first_line: 1.25cm
+    3:
+      size: 14pt
+      bold: true
+      italic: false
+      uppercase: false
+      alignment: left
+      space_before: 0pt
+      space_after: 0pt
+      page_break_before: false
+      keep_with_next: true
+      indent_first_line: 1.25cm
+  structural:
+    size: 14pt
+    bold: true
+    italic: false
+    uppercase: true
+    alignment: center
+    space_before: 0pt
+    space_after: 0pt
+    page_break_before: true
+    keep_with_next: true
+    indent_first_line: 0cm
+  structural_titles:
+    - СОДЕРЖАНИЕ
+    - ВВЕДЕНИЕ
+    - ЗАКЛЮЧЕНИЕ
+    - СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ
+
+captions:
+  image:
+    italic: false
+    bold: false
+    alignment: center
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+    line_spacing: 1.0
+  table:
+    italic: false
+    bold: false
+    alignment: left
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+    line_spacing: 1.0
+  listing:
+    italic: false
+    bold: false
+    alignment: left
+    format: "{category} {number} — {text}"
+    space_before: 0pt
+    space_after: 0pt
+    line_spacing: 1.0
+  continuation_break: false
+
+table:
+  repeat_header_on_break: true
+  header_bold: true
+  space_before: 0pt
+  space_after: 0pt
+
+listing:
+  syntax_highlighting: false
+  font:
+    family: Consolas
+    size: 14pt
+  line_spacing: 1.0
+  space_before: 0pt
+  space_after: 0pt
+
+lists:
+  bullet_marker: "—"
+  indent_left: 1.25cm
+  indent_first_line: 0cm
+
+equation:
+  space_before: 21pt
+  space_after: 21pt
+  numbering_alignment: right
+  parentheses: true

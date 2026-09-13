@@ -1,0 +1,4 @@
+preset: gost-7-32-2017
+overrides:
+  captions:
+    continuation_break: true

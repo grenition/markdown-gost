@@ -1,0 +1,5 @@
+preset: default
+overrides:
+  table:
+    space_before: 24pt
+    space_after: 6pt

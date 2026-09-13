@@ -1,0 +1,4 @@
+preset: default
+overrides:
+  table:
+    header_bold: false

@@ -1,0 +1,8 @@
+preset: default
+overrides:
+  page:
+    margins:
+      top: 1cm
+      bottom: 1cm
+      left: 1cm
+      right: 1cm

@@ -1,0 +1,4 @@
+# Per-case overrides for the screenshot harness.
+# See tests/screenshot/README.md.
+tolerance_pixels: 200
+dpi: 100

@@ -1,0 +1,4 @@
+tolerance_pixels: 200
+dpi: 100
+html_enabled: false
+html_known_broken: huge table pagination needs preview chunking before enabling

@@ -1,0 +1,4 @@
+preset: default
+overrides:
+  table:
+    repeat_header_on_break: false

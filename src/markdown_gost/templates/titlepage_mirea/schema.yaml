@@ -1,0 +1,123 @@
+groups:
+  - id: main
+    label: "Основное"
+    order: 10
+  - id: organization
+    label: "Организация"
+    order: 20
+  - id: signatures
+    label: "Подписи"
+    order: 30
+  - id: footer
+    label: "Подвал"
+    order: 40
+fields:
+  title:
+    type: str
+    default: ""
+    ui:
+      label: "Тема работы"
+      description: "Полное название работы (как в задании)"
+      group: main
+      order: 10
+  subject:
+    type: str
+    default: ""
+    ui:
+      label: "Дисциплина"
+      description: "Название учебной дисциплины"
+      group: main
+      order: 20
+  topic:
+    type: str
+    default: ""
+    ui:
+      label: "Тема"
+      description: "Тема работы, если её нужно печатать отдельной строкой"
+      group: main
+      order: 30
+  university_full:
+    type: str
+    default: ""
+    ui:
+      label: "Вуз (полное)"
+      description: "Полное наименование вуза (например, «…университет»)"
+      group: organization
+      order: 5
+  university_short:
+    type: str
+    default: ""
+    ui:
+      label: "Вуз (сокращённое)"
+      description: "Сокращённое наименование вуза крупным шрифтом"
+      group: organization
+      order: 6
+  institute:
+    type: str
+    default: ""
+    ui:
+      label: "Институт"
+      description: "Полное название института"
+      group: organization
+      order: 10
+  department:
+    type: str
+    default: ""
+    ui:
+      label: "Кафедра"
+      description: "Полное название кафедры"
+      group: organization
+      order: 20
+  authors_title:
+    type: str
+    default: "Выполнил"
+    ui:
+      label: "Заголовок исполнителей"
+      description: "Слово над списком авторов (\"Выполнил\", \"Выполнили\")"
+      group: signatures
+      order: 10
+  authors:
+    # Список групп авторов. Каждая группа: ``{label: str, names: list[str]}``.
+    # Подпись ``label`` пишется перед первым именем группы; последующие имена
+    # идут справа без префикса. Между группами вставляется небольшой отступ.
+    type: list[dict]
+    default: []
+    ui:
+      label: "Авторы"
+      description: "Группы авторов (например, по группам). Каждая запись: {label, names: [...]}"
+      group: signatures
+      order: 20
+  reviewer_title:
+    type: str
+    default: "Проверил"
+    ui:
+      label: "Заголовок проверяющих"
+      description: "Слово над списком проверяющих"
+      group: signatures
+      order: 30
+  reviewers:
+    # Список групп проверяющих, формат тот же, что и ``authors``.
+    type: list[dict]
+    default: []
+    ui:
+      label: "Проверяющие"
+      description: "Группы проверяющих. Каждая запись: {label, names: [...]}"
+      group: signatures
+      order: 40
+  city:
+    type: str
+    default: ""
+    ui:
+      label: "Город"
+      description: "Город (обычно прописными — \"МОСКВА\")"
+      group: footer
+      order: 10
+  year:
+    type: str
+    default: ""
+    ui:
+      label: "Год"
+      description: "Год выпуска (например, \"2026 г.\")"
+      group: footer
+      order: 20
+strict: true

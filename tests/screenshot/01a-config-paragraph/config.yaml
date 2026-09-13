@@ -1,0 +1,11 @@
+preset: default
+overrides:
+  font:
+    family: Arial
+  paragraph:
+    alignment: left
+    indent_first_line: 2cm
+    inline_code:
+      font: Courier New
+      size: 12pt
+      quotes: true

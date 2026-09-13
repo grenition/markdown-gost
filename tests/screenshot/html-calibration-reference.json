@@ -1,0 +1,625 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-07-20",
+  "oracle": "committed expected.pdf files rendered by canonical DOCX-to-PDF pipeline",
+  "browser": "Playwright Chromium 149.0.7827.55 (chromium v1228)",
+  "metric": {
+    "raw": "non-identical RGB pixels after resizing actual to expected dimensions",
+    "layout": "union of unmatched luminance<245 ink pixels with a 1px antialias neighborhood",
+    "ink_luminance_threshold": 245,
+    "antialias_tolerance_radius_px": 1
+  },
+  "thresholds": {
+    "aggregate_relative": 0.1,
+    "aggregate_absolute": 0.0001,
+    "raw_aggregate_relative": 0.05,
+    "raw_aggregate_absolute": 0.001,
+    "case_relative": 0.15,
+    "case_absolute": 0.0003,
+    "worst_page_relative": 0.1,
+    "worst_page_absolute": 0.0002,
+    "page_relative": 0.15,
+    "page_absolute": 0.0003
+  },
+  "aggregate": {
+    "expected_pages": 48,
+    "actual_pages": 48,
+    "page_count_mismatches": 0,
+    "raw_differing_pixels": 1127537,
+    "differing_pixels": 349359,
+    "compared_pixels": 46444320,
+    "differing_rate": 0.0075221,
+    "worst_case_rate": 0.02125177,
+    "worst_page_rate": 0.02857512
+  },
+  "cases": [
+    {
+      "case": "01-basic-paragraphs",
+      "expected_pages": 1,
+      "differing_pixels": 13892,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01435732,
+      "worst_page_rate": 0.01435732,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13892,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01435732
+        }
+      ]
+    },
+    {
+      "case": "01a-config-paragraph",
+      "expected_pages": 1,
+      "differing_pixels": 4096,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0042332,
+      "worst_page_rate": 0.0042332,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 4096,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0042332
+        }
+      ]
+    },
+    {
+      "case": "02-headings",
+      "expected_pages": 3,
+      "differing_pixels": 7323,
+      "compared_pixels": 2902770,
+      "differing_rate": 0.00252276,
+      "worst_page_rate": 0.00426214,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 1182,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00122159
+        },
+        {
+          "page": 2,
+          "differing_pixels": 4124,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00426214
+        },
+        {
+          "page": 3,
+          "differing_pixels": 2017,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00208456
+        }
+      ]
+    },
+    {
+      "case": "02a-config-headings",
+      "expected_pages": 2,
+      "differing_pixels": 11689,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00604026,
+      "worst_page_rate": 0.009534,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 9225,
+          "compared_pixels": 967590,
+          "differing_rate": 0.009534
+        },
+        {
+          "page": 2,
+          "differing_pixels": 2464,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00254653
+        }
+      ]
+    },
+    {
+      "case": "03-page-break",
+      "expected_pages": 3,
+      "differing_pixels": 3007,
+      "compared_pixels": 2902770,
+      "differing_rate": 0.00103591,
+      "worst_page_rate": 0.00167426,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 674,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00069658
+        },
+        {
+          "page": 2,
+          "differing_pixels": 1620,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00167426
+        },
+        {
+          "page": 3,
+          "differing_pixels": 713,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00073688
+        }
+      ]
+    },
+    {
+      "case": "03a-config-page",
+      "expected_pages": 2,
+      "differing_pixels": 8788,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00454118,
+      "worst_page_rate": 0.00804266,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 7782,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00804266
+        },
+        {
+          "page": 2,
+          "differing_pixels": 1006,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0010397
+        }
+      ]
+    },
+    {
+      "case": "04-lists",
+      "expected_pages": 4,
+      "differing_pixels": 59638,
+      "compared_pixels": 3870360,
+      "differing_rate": 0.0154089,
+      "worst_page_rate": 0.02330429,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 14854,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01535154
+        },
+        {
+          "page": 2,
+          "differing_pixels": 13051,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01348815
+        },
+        {
+          "page": 3,
+          "differing_pixels": 22549,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02330429
+        },
+        {
+          "page": 4,
+          "differing_pixels": 9184,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00949162
+        }
+      ]
+    },
+    {
+      "case": "05-images",
+      "expected_pages": 2,
+      "differing_pixels": 3832,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00198018,
+      "worst_page_rate": 0.0021414,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 1760,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00181895
+        },
+        {
+          "page": 2,
+          "differing_pixels": 2072,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0021414
+        }
+      ]
+    },
+    {
+      "case": "05b-images-sized",
+      "expected_pages": 1,
+      "differing_pixels": 3505,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0036224,
+      "worst_page_rate": 0.0036224,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3505,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0036224
+        }
+      ]
+    },
+    {
+      "case": "05c-config-caption-image",
+      "expected_pages": 1,
+      "differing_pixels": 3021,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00312219,
+      "worst_page_rate": 0.00312219,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3021,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00312219
+        }
+      ]
+    },
+    {
+      "case": "06-tables-simple",
+      "expected_pages": 1,
+      "differing_pixels": 5758,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00595087,
+      "worst_page_rate": 0.00595087,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 5758,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00595087
+        }
+      ]
+    },
+    {
+      "case": "06a-tables-explicit-widths",
+      "expected_pages": 1,
+      "differing_pixels": 13075,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01351295,
+      "worst_page_rate": 0.01351295,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13075,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01351295
+        }
+      ]
+    },
+    {
+      "case": "06b-tables-mixed-auto",
+      "expected_pages": 1,
+      "differing_pixels": 14053,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01452371,
+      "worst_page_rate": 0.01452371,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 14053,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01452371
+        }
+      ]
+    },
+    {
+      "case": "06c-tables-spacing",
+      "expected_pages": 1,
+      "differing_pixels": 6417,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00663194,
+      "worst_page_rate": 0.00663194,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 6417,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00663194
+        }
+      ]
+    },
+    {
+      "case": "06d-tables-flattened-colspan",
+      "expected_pages": 1,
+      "differing_pixels": 2870,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00296613,
+      "worst_page_rate": 0.00296613,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 2870,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00296613
+        }
+      ]
+    },
+    {
+      "case": "06e-tables-cell-slash",
+      "expected_pages": 1,
+      "differing_pixels": 5937,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00613586,
+      "worst_page_rate": 0.00613586,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 5937,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00613586
+        }
+      ]
+    },
+    {
+      "case": "06f-import-html-table-roundtrip",
+      "expected_pages": 1,
+      "differing_pixels": 7692,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00794965,
+      "worst_page_rate": 0.00794965,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 7692,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00794965
+        }
+      ]
+    },
+    {
+      "case": "07c-tables-no-bold-header",
+      "expected_pages": 1,
+      "differing_pixels": 20563,
+      "compared_pixels": 967590,
+      "differing_rate": 0.02125177,
+      "worst_page_rate": 0.02125177,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 20563,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02125177
+        }
+      ]
+    },
+    {
+      "case": "07f-tables-alignment",
+      "expected_pages": 1,
+      "differing_pixels": 16302,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01684805,
+      "worst_page_rate": 0.01684805,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 16302,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01684805
+        }
+      ]
+    },
+    {
+      "case": "08-listing-plain",
+      "expected_pages": 1,
+      "differing_pixels": 2236,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0023109,
+      "worst_page_rate": 0.0023109,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 2236,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0023109
+        }
+      ]
+    },
+    {
+      "case": "09-listing-highlighted",
+      "expected_pages": 1,
+      "differing_pixels": 3929,
+      "compared_pixels": 967590,
+      "differing_rate": 0.0040606,
+      "worst_page_rate": 0.0040606,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3929,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0040606
+        }
+      ]
+    },
+    {
+      "case": "11-equations-inline",
+      "expected_pages": 1,
+      "differing_pixels": 16772,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01733379,
+      "worst_page_rate": 0.01733379,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 16772,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01733379
+        }
+      ]
+    },
+    {
+      "case": "12-equations-block",
+      "expected_pages": 1,
+      "differing_pixels": 3330,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00344154,
+      "worst_page_rate": 0.00344154,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3330,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00344154
+        }
+      ]
+    },
+    {
+      "case": "12a-equations-config-no-parens",
+      "expected_pages": 1,
+      "differing_pixels": 3106,
+      "compared_pixels": 967590,
+      "differing_rate": 0.00321004,
+      "worst_page_rate": 0.00321004,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 3106,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00321004
+        }
+      ]
+    },
+    {
+      "case": "13-equations-complex",
+      "expected_pages": 1,
+      "differing_pixels": 18311,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01892434,
+      "worst_page_rate": 0.01892434,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 18311,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01892434
+        }
+      ]
+    },
+    {
+      "case": "14-template-titlepage",
+      "expected_pages": 2,
+      "differing_pixels": 17060,
+      "compared_pixels": 1935180,
+      "differing_rate": 0.00881572,
+      "worst_page_rate": 0.01671989,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 16178,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01671989
+        },
+        {
+          "page": 2,
+          "differing_pixels": 882,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00091154
+        }
+      ]
+    },
+    {
+      "case": "15-template-content",
+      "expected_pages": 5,
+      "differing_pixels": 37011,
+      "compared_pixels": 4837950,
+      "differing_rate": 0.00765014,
+      "worst_page_rate": 0.02857512,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 27649,
+          "compared_pixels": 967590,
+          "differing_rate": 0.02857512
+        },
+        {
+          "page": 2,
+          "differing_pixels": 2951,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00304985
+        },
+        {
+          "page": 3,
+          "differing_pixels": 4345,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00449054
+        },
+        {
+          "page": 4,
+          "differing_pixels": 756,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00078132
+        },
+        {
+          "page": 5,
+          "differing_pixels": 1310,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00135388
+        }
+      ]
+    },
+    {
+      "case": "15b-gost-headings",
+      "expected_pages": 4,
+      "differing_pixels": 10936,
+      "compared_pixels": 3870360,
+      "differing_rate": 0.00282558,
+      "worst_page_rate": 0.00757966,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 1595,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00164843
+        },
+        {
+          "page": 2,
+          "differing_pixels": 7334,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00757966
+        },
+        {
+          "page": 3,
+          "differing_pixels": 1165,
+          "compared_pixels": 967590,
+          "differing_rate": 0.00120402
+        },
+        {
+          "page": 4,
+          "differing_pixels": 842,
+          "compared_pixels": 967590,
+          "differing_rate": 0.0008702
+        }
+      ]
+    },
+    {
+      "case": "15e-gost-lists",
+      "expected_pages": 1,
+      "differing_pixels": 13780,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01424157,
+      "worst_page_rate": 0.01424157,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 13780,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01424157
+        }
+      ]
+    },
+    {
+      "case": "15f-gost-equations",
+      "expected_pages": 1,
+      "differing_pixels": 11430,
+      "compared_pixels": 967590,
+      "differing_rate": 0.01181285,
+      "worst_page_rate": 0.01181285,
+      "pages": [
+        {
+          "page": 1,
+          "differing_pixels": 11430,
+          "compared_pixels": 967590,
+          "differing_rate": 0.01181285
+        }
+      ]
+    }
+  ]
+}
