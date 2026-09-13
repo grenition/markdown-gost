@@ -118,6 +118,7 @@ RUN poetry install --only-root
 
 COPY tests ./tests
 COPY docs ./docs
+COPY skills ./skills
 COPY pytest.ini mypy.ini ruff.toml ./
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
