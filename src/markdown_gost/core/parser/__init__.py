@@ -1,4 +1,4 @@
-"""Markdown → AST. Normative grammar: docs/syntax-manifest.md."""
+"""Markdown → AST. Normative grammar: docs/syntax.md."""
 
 from __future__ import annotations
 

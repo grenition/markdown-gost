@@ -13,7 +13,7 @@ never aborts the import.
 
 This transformer must run **before** :mod:`caption_folder` so that a
 ``Листинг N — Caption`` paragraph adjacent to a freshly wrapped fence is
-folded into a trailing ``: Caption`` according to docs/syntax-manifest.md.
+folded into a trailing ``: Caption`` according to docs/syntax.md.
 """
 
 from __future__ import annotations

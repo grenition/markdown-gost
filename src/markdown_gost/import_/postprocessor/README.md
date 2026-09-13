@@ -1,7 +1,7 @@
 # Import postprocessor
 
 Transformers in this package run after `pandoc` and reshape its output into
-Markdown defined by the mandatory `docs/syntax-manifest.md` contract
+Markdown defined by the mandatory `docs/syntax.md` contract
 (mapping details: `docs/import-syntax-mapping.md`). No legacy syntax is emitted.
 
 ## Representation

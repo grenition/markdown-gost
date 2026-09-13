@@ -3,7 +3,7 @@
 In ГОСТ-formatted theses СОДЕРЖАНИЕ / ВВЕДЕНИЕ / ЗАКЛЮЧЕНИЕ / СПИСОК
 ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ are conventionally rendered without a chapter
 number even though they sit at heading-level 1. Our exporter relies on the
-``.unnumbered`` role (``docs/syntax-manifest.md``).
+``.unnumbered`` role (``docs/syntax.md``).
 """
 
 from __future__ import annotations

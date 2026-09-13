@@ -4,7 +4,6 @@ Markdown to GOST 7.32 DOCX/PDF converter with a paginated HTML preview.
 
 - [Syntax reference](docs/syntax.md) — extended Markdown: tables, listings, equations, appendices, bibliography, templates
 - [Architecture](docs/architecture.md) — pipeline, config system, storage protocol, testing tiers
-- [Syntax example](docs/example.md) — full live sample
 
 ## Install
 

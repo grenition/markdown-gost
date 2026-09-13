@@ -4,7 +4,7 @@ Snapshot tests for the DOCX → markdown import pipeline. Each fixture is a
 self-contained directory; the harness runs `import_docx()` against
 `input.docx` and diffs the resulting markdown against `expected.md`.
 
-The syntax contract is [syntax-manifest.md](../../../docs/syntax-manifest.md).
+The syntax contract is [docs/syntax.md](../../../docs/syntax.md).
 Comparison is exact except for Pandoc-version-dependent padding after top-level
 bullet markers and inside pipe tables (including separator dash counts).
 Those differences are accepted only when the parsed AST is also identical.

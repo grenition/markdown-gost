@@ -38,7 +38,7 @@ Size = tuple[float, str]
 
 
 def parse_attributes(raw: str) -> dict[str, str]:
-    """Parse the single attribute grammar defined in syntax-manifest.md."""
+    """Parse the single attribute grammar defined in syntax.md."""
     raw = raw.strip()
     if raw.startswith("{") and raw.endswith("}"):
         raw = raw[1:-1]
