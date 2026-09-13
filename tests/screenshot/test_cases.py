@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 from _diff import diff_pages
 from _pipeline import (
+    ARTIFACTS_DIR,
     CaseFailure,
     CaseInputs,
     HarnessError,
@@ -20,7 +21,6 @@ from _pipeline import (
     update_baselines_enabled,
 )
 from _validators.docx import validate_docx
-from _pipeline import ARTIFACTS_DIR
 from PIL import Image
 
 

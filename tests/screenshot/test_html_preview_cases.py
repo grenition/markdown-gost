@@ -16,12 +16,12 @@ from _html_pipeline import (
     strict_runtime_enabled,
 )
 from _pipeline import (
+    ARTIFACTS_DIR,
     CaseFailure,
     CaseInputs,
     pdf_to_images,
     update_baselines_enabled,
 )
-from _pipeline import ARTIFACTS_DIR
 
 
 @pytest.fixture(scope="session")
