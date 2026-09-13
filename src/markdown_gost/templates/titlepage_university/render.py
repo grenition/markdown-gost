@@ -14,7 +14,8 @@ bold → пустой → ``по дисциплине «...»`` → 6 пусты
 
 from __future__ import annotations
 
-import os
+import io
+import urllib.request
 from collections.abc import Generator
 from pathlib import Path
 from typing import Any
@@ -28,10 +29,37 @@ from markdown_gost.render.layout_tracker import LayoutState
 from markdown_gost.renderable._oxml import create_element
 from markdown_gost.renderable.base import Renderable, RenderedInfo, SubRenderable
 
-_LOGO_PATH = str(Path(__file__).parent / "mirea_logo.png")
+_LOGO_MAX_BYTES = 5 * 1024 * 1024
+_LOGO_TIMEOUT_SECONDS = 10.0
+_LOGO_WIDTH = Cm(2.5)
 _FONT_NAME = "Times New Roman"
 _DEFAULT_FONT_SIZE: Length = Pt(14)
 _ZERO_LENGTH: Length = Length(0)
+
+
+def _load_logo(reference: object) -> bytes | None:
+    """Load an optional emblem image: local path or http(s) URL.
+
+    A broken explicit reference is an error (it must not silently vanish);
+    an absent/empty ``logo`` simply renders no emblem.
+    """
+
+    if not reference or not isinstance(reference, str):
+        return None
+    ref = reference.strip()
+    if not ref:
+        return None
+    if ref.startswith(("http://", "https://")):
+        with urllib.request.urlopen(ref, timeout=_LOGO_TIMEOUT_SECONDS) as response:
+            data = response.read(_LOGO_MAX_BYTES + 1)
+    else:
+        path = Path(ref)
+        if not path.is_file():
+            raise ValueError(f"logo not found: {ref!r}")
+        data = path.read_bytes()
+    if len(data) > _LOGO_MAX_BYTES:
+        raise ValueError(f"logo exceeds {_LOGO_MAX_BYTES} bytes: {ref!r}")
+    return data
 
 
 def _add_centered_paragraph(
@@ -97,7 +125,7 @@ class Titlepage(Renderable):
         # начиная со второй страницы.
         parent.sections[0].different_first_page_header_footer = True
 
-        # --- Logo ---
+        # --- Logo (optional emblem: ``logo`` param — path or http(s) URL) ---
         logo_p = DocxParagraph(create_element("w:p"), parent)
         logo_p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         logo_p.paragraph_format.space_before = 0
@@ -105,8 +133,9 @@ class Titlepage(Renderable):
         logo_p.paragraph_format.first_line_indent = 0
         logo_p.paragraph_format.line_spacing = 1
         run = logo_p.add_run()
-        if os.path.exists(_LOGO_PATH):
-            run.add_picture(_LOGO_PATH, width=Cm(2.5))
+        logo_data = _load_logo(data.get("logo"))
+        if logo_data is not None:
+            run.add_picture(io.BytesIO(logo_data), width=_LOGO_WIDTH)
         elements.append(logo_p)
 
         # --- МИНОБРНАУКИ РОССИИ ---

@@ -1,4 +1,4 @@
-::: {.template name="titlepage-mirea"}
+::: {.template name="titlepage-university"}
 title: Отчёт по практическим работам
 subject: Проектирование информационных систем
 topic: Информационная система учёта заявок

@@ -196,7 +196,7 @@ are printed. `bibliography.order: input` switches to input order.
 ## Templates
 
 ```markdown
-::: {.template name="titlepage-mirea"}
+::: {.template name="titlepage-university"}
 title: Practice report no. 3
 subject: Algorithms and data structures
 topic: Sorting research

@@ -75,7 +75,7 @@ def test_colspan_flattens_with_trailing_empty_cells() -> None:
     )
 
 
-def test_mirea_titlepage_with_image_and_colspan() -> None:
+def test_university_titlepage_with_image_and_colspan() -> None:
     src = textwrap.dedent(
         """\
         <table>

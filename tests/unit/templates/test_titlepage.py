@@ -1,6 +1,9 @@
-"""Юнит-тесты шаблона ``titlepage`` — порт легаси-формы МИРЭА (T023)."""
+"""Юнит-тесты шаблона ``titlepage-university`` (T023)."""""
 
 from __future__ import annotations
+
+import struct
+import zlib
 
 import pytest
 from docx.shared import Length
@@ -10,7 +13,7 @@ from markdown_gost.render.document_factory import build_document
 from markdown_gost.render.layout_tracker import LayoutTracker
 from markdown_gost.renderable.base import RenderedInfo
 from markdown_gost.templates import TemplateContext, render_template
-from markdown_gost.templates.titlepage_mirea.render import Titlepage
+from markdown_gost.templates.titlepage_university.render import Titlepage
 
 
 @pytest.fixture
@@ -39,7 +42,7 @@ def _render_to_paragraphs(rendered, max_height=10_000_000, max_width=6_000_000):
 def test_titlepage_renders_with_only_defaults(ctx):
     """Все поля имеют дефолты — шаблон должен отрендериться без params."""
 
-    rendered = render_template("titlepage-mirea", {}, ctx)
+    rendered = render_template("titlepage-university", {}, ctx)
     assert isinstance(rendered, Titlepage)
     infos = _render_to_paragraphs(rendered)
     xml = "".join(info.docx_element._p.xml for info in infos)
@@ -51,7 +54,7 @@ def test_titlepage_renders_university_params(ctx):
     """Вуз задается параметрами и без них не печатается."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {
             "university_full": "«Государственный тестовый университет»",
             "university_short": "ГТУ-ТЕСТ",
@@ -66,7 +69,7 @@ def test_titlepage_renders_university_params(ctx):
 
 def test_titlepage_renders_full_payload(ctx):
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {
             "title": "Отчёт по практике",
             "subject": "Моделирование сред",
@@ -114,7 +117,7 @@ def test_titlepage_group_label_is_user_text(ctx):
     """``label`` в группе рендерится буквально, без авто-склонения по числу имён."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {
             "authors": [
                 {
@@ -137,7 +140,7 @@ def test_titlepage_no_auto_group_label(ctx):
     """Шаблон не подставляет «Студент группы …» от себя — только то, что в ``label``."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {"authors": [{"label": "", "names": ["Иванов И.И."]}]},
         ctx,
     )
@@ -153,7 +156,7 @@ def test_titlepage_rejects_legacy_group_field(ctx):
     """Поле ``group`` удалено — strict-схема должна выкинуть его как unknown."""
 
     rendered = render_template(
-        "titlepage-mirea", {"group": "ИКБО-20-23"}, ctx
+        "titlepage-university", {"group": "ИКБО-20-23"}, ctx
     )
     assert not isinstance(rendered, Titlepage)
 
@@ -162,7 +165,7 @@ def test_titlepage_rejects_legacy_footer_field(ctx):
     """``footer`` разделён на ``city``/``year`` — старое поле запрещено."""
 
     rendered = render_template(
-        "titlepage-mirea", {"footer": "МОСКВА 2026 г."}, ctx
+        "titlepage-university", {"footer": "МОСКВА 2026 г."}, ctx
     )
     assert not isinstance(rendered, Titlepage)
 
@@ -171,7 +174,7 @@ def test_titlepage_city_and_year_combined_in_footer(ctx):
     """``city`` и ``year`` рендерятся одной строкой через пробел внизу страницы."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {"city": "САНКТ-ПЕТЕРБУРГ", "year": "2027"},
         ctx,
     )
@@ -185,7 +188,7 @@ def test_titlepage_city_and_year_combined_in_footer(ctx):
 def test_titlepage_only_city(ctx):
     """Только ``city`` без года — рендерится без лишнего пробела."""
 
-    rendered = render_template("titlepage-mirea", {"city": "МОСКВА"}, ctx)
+    rendered = render_template("titlepage-university", {"city": "МОСКВА"}, ctx)
     assert isinstance(rendered, Titlepage)
     infos = _render_to_paragraphs(rendered)
     xml = "".join(info.docx_element._p.xml for info in infos)
@@ -197,7 +200,7 @@ def test_titlepage_rejects_legacy_label_fields(ctx):
     """``authors_label``/``reviewer_label`` теперь живут внутри групп."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {"authors_label": "Студент группы ИКБО-20-23"},
         ctx,
     )
@@ -208,7 +211,7 @@ def test_titlepage_multiple_author_groups(ctx):
     """Несколько групп авторов — каждая со своей подписью."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {
             "authors": [
                 {
@@ -240,7 +243,7 @@ def test_titlepage_multiple_reviewer_groups(ctx):
     """Несколько групп проверяющих — например, разные должности."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {
             "reviewers": [
                 {
@@ -269,7 +272,7 @@ def test_titlepage_multiple_reviewer_groups(ctx):
 def test_titlepage_footer_omitted_when_empty(ctx):
     """Пустые ``city``/``year`` — параграф с framePr вообще не рендерится."""
 
-    rendered = render_template("titlepage-mirea", {}, ctx)
+    rendered = render_template("titlepage-university", {}, ctx)
     assert isinstance(rendered, Titlepage)
     infos = _render_to_paragraphs(rendered)
     xml = "".join(info.docx_element._p.xml for info in infos)
@@ -278,7 +281,7 @@ def test_titlepage_footer_omitted_when_empty(ctx):
 
 def test_titlepage_rejects_unknown_field(ctx):
     rendered = render_template(
-        "titlepage-mirea", {"title": "T", "extra": "boom"}, ctx
+        "titlepage-university", {"title": "T", "extra": "boom"}, ctx
     )
     assert not isinstance(rendered, Titlepage)
 
@@ -287,7 +290,7 @@ def test_titlepage_last_yield_fills_page_height(ctx):
     """Последний RenderedInfo должен иметь высоту = max_height страницы."""
 
     rendered = render_template(
-        "titlepage-mirea",
+        "titlepage-university",
         {"title": "T", "city": "МОСКВА", "year": "2026"},
         ctx,
     )
@@ -301,3 +304,47 @@ def test_titlepage_last_yield_fills_page_height(ctx):
     assert infos[-1].height == page_height
     # Все промежуточные элементы — height=0.
     assert all(info.height == 0 for info in infos[:-1])
+
+
+def _png_bytes() -> bytes:
+    """Minimal valid 1×1 PNG."""
+
+    sig = b"\x89PNG\r\n\x1a\n"
+
+    def chunk(tag: bytes, data: bytes) -> bytes:
+        return (
+            struct.pack(">I", len(data))
+            + tag
+            + data
+            + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+        )
+
+    ihdr = struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)
+    raw = bytes([0, 127, 127, 127])
+    return sig + chunk(b"IHDR", ihdr) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b"")
+
+
+def _rendered_xml(ctx, params) -> str:
+    rendered = render_template("titlepage-university", params, ctx)
+    infos = _render_to_paragraphs(rendered)
+    return "".join(info.docx_element._p.xml for info in infos)
+
+
+def test_titlepage_logo_from_local_file(ctx, tmp_path):
+    logo = tmp_path / "emblem.png"
+    logo.write_bytes(_png_bytes())
+
+    xml = _rendered_xml(ctx, {"logo": str(logo)})
+
+    assert "<w:drawing>" in xml
+
+
+def test_titlepage_without_logo_renders_no_drawing(ctx):
+    xml = _rendered_xml(ctx, {})
+
+    assert "<w:drawing>" not in xml
+
+
+def test_titlepage_broken_logo_reference_raises(ctx):
+    with pytest.raises(ValueError, match="logo not found"):
+        _rendered_xml(ctx, {"logo": "/no/such/emblem.png"})

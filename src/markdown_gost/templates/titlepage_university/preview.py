@@ -35,7 +35,8 @@ def _title_page_layout(params: dict[str, Any]) -> dict[str, Any]:
             for value in (_value(params, "city"), _value(params, "year"))
             if value
         ),
-        "logo_omitted": True,
+        "logo_url": _value(params, "logo") or None,
+        "logo_omitted": not _value(params, "logo"),
     }
 
 

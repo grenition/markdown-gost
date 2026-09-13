@@ -1,4 +1,4 @@
-::: {.template name="titlepage-mirea"}
+::: {.template name="titlepage-university"}
 title: Отчёт по практической работе №3
 subject: Моделирование сред и разработка приложений виртуальной и дополненной реальности
 institute: Институт примеров и образцов

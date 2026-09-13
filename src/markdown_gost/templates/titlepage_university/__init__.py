@@ -1,4 +1,8 @@
-"""Шаблон ``titlepage-mirea`` — титульный лист по типовой российской университетской форме (T023).
+"""Шаблон ``titlepage-university`` — титульный лист по типовой российской университетской форме (T023).
+
+Вуз задаётся параметрами ``university_full`` / ``university_short``; эмблема —
+параметром ``logo`` (путь или http(s)-ссылка). Сам шаблон не привязан к
+конкретному учебному заведению.
 
 Имя реестра содержит дефис, чтобы оставить пространство имён ``titlepage``
 свободным под другие вузовские/факультетские варианты — пользователи смогут
@@ -17,7 +21,7 @@ from .render import render
 _HERE = Path(__file__).parent
 
 register(
-    "titlepage-mirea",
+    "titlepage-university",
     render,
     schema_from_yaml(_HERE / "schema.yaml"),
     preview_fn=render_preview,

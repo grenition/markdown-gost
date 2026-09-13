@@ -189,7 +189,7 @@ def test_page_break_renders_as_hidden_marker_between_pages() -> None:
 
 def test_titlepage_template_is_visible_in_html_before_following_page() -> None:
     model = build_preview_model(
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Preview title\n"
         "city: МОСКВА\n"
         "year: 2026 г.\n"
@@ -208,7 +208,7 @@ def test_titlepage_template_renders_divider_signature_columns_and_bottom_footer(
     root = _parse(
         render_preview_html(
             build_preview_model(
-                '::: {.template name="titlepage-mirea"}\n'
+                '::: {.template name="titlepage-university"}\n'
                 "title: Preview title\n"
                 "authors:\n"
                 "  - label: Student\n"

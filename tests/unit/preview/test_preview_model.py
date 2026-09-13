@@ -89,7 +89,7 @@ def test_hard_page_break_splits_pages_without_pdf_pipeline() -> None:
 
 def test_titlepage_template_is_visible_and_forces_following_content_to_next_page() -> None:
     model = build_preview_model(
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Preview title\n"
         "city: МОСКВА\n"
         "year: 2026 г.\n"
@@ -110,7 +110,7 @@ def test_titlepage_template_is_visible_and_forces_following_content_to_next_page
 def test_titlepage_template_isolated_between_normal_content() -> None:
     model = build_preview_model(
         "Before\n\n"
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Preview title\n"
         "city: МОСКВА\n"
         "year: 2026 г.\n"
@@ -131,7 +131,7 @@ def test_titlepage_template_isolated_between_normal_content() -> None:
 
 def test_titlepage_template_uses_semantic_layout_with_signatures_and_footer() -> None:
     model = build_preview_model(
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Preview title\n"
         "authors:\n"
         "  - label: Student\n"

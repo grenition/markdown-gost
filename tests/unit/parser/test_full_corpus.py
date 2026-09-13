@@ -89,5 +89,5 @@ def test_syntax_md_short_and_long_templates():
     # Длинная форма обязана быть распознана отдельным узлом, даже если YAML
     # внутри (как в текущем примере) семантически невалидный — параметры
     # тогда останутся пустыми, но узел должен существовать.
-    titlepage = [t for t in tpls if t.name == "titlepage-mirea"]
+    titlepage = [t for t in tpls if t.name == "titlepage-university"]
     assert len(titlepage) == 1

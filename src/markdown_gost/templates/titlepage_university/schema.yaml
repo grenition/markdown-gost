@@ -12,6 +12,14 @@ groups:
     label: "Подвал"
     order: 40
 fields:
+  logo:
+    type: str
+    default: ""
+    ui:
+      label: "Эмблема/герб (ссылка)"
+      description: "Путь или http(s)-ссылка на изображение (ширина ~2,5 см)"
+      group: organization
+      order: 4
   title:
     type: str
     default: ""

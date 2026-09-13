@@ -199,4 +199,4 @@ def render_preview_template(
 # подмодули. Конкретные шаблоны живут в собственных пакетах, а здесь мы
 # просто импортируем их, чтобы `register(...)` отработал.
 from . import content as _content  # noqa: E402, F401
-from . import titlepage_mirea as _titlepage_mirea  # noqa: E402, F401
+from . import titlepage_university as _titlepage_university  # noqa: E402, F401

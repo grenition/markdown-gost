@@ -14,7 +14,7 @@ def test_short_template_block():
 
 def test_long_template_block_with_yaml():
     src = (
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Отчёт\n"
         "year: 2026\n"
         "authors:\n"
@@ -27,7 +27,7 @@ def test_long_template_block_with_yaml():
     doc = parse(src)
     tpl = doc.children[0]
     assert isinstance(tpl, ast.TemplateBlock)
-    assert tpl.name == "titlepage-mirea"
+    assert tpl.name == "titlepage-university"
     assert tpl.params["title"] == "Отчёт"
     assert tpl.params["year"] == 2026
     assert tpl.params["authors"] == ["Иванов", "Петров"]

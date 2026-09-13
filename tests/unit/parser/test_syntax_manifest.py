@@ -45,7 +45,7 @@ def test_attributes_do_not_leak_from_code_into_images():
 def test_container_parameters_and_bibliography():
     doc = parse(
         '::: {.template name="content" depth=3 dot_leader=false}\n:::\n\n'
-        '::: {.template name="titlepage-mirea"}\n'
+        '::: {.template name="titlepage-university"}\n'
         "title: Работа\nauthors:\n  - label: Студент\n    names: [Иванов]\n:::\n\n"
         "Текст [@book].\n\n::: {.bibliography}\n"
         "- id: book\n  text: Учебник\n:::\n"

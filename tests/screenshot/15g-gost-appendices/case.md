@@ -1,4 +1,4 @@
-::: {.template name="titlepage-mirea"}
+::: {.template name="titlepage-university"}
 title: Проверка приложений
 subject: Проектирование информационных систем
 institute: Институт информационных технологий
