@@ -72,4 +72,5 @@ title: Practice report
 ````
 
 Everything else — attributes grammar, container nesting, error rules —
-is in `syntax.md` (kept identical to `docs/syntax.md` in the repository).
+is in `syntax.md` next to this file (the single source of truth,
+shared with the repository).
