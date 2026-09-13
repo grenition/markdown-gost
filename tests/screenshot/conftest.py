@@ -26,6 +26,9 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent))
 
 from _pipeline import (
+    ARTIFACTS_DIR,
+    REPORT_PDF,
+    SCREENSHOT_ROOT,
     CaseFailure,
     CaseInputs,
     discover_cases,
@@ -33,10 +36,6 @@ from _pipeline import (
     unoserver_settings,
 )
 from _report import build_report
-
-SCREENSHOT_ROOT = Path(__file__).parent
-ARTIFACTS_DIR = SCREENSHOT_ROOT / "_artifacts"
-REPORT_PDF = SCREENSHOT_ROOT / "_report.pdf"
 
 
 _FAILURES: list[CaseFailure] = []

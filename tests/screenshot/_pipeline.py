@@ -21,6 +21,10 @@ from PIL import Image
 DEFAULT_TOLERANCE_PIXELS = 50
 DEFAULT_DPI = 100
 
+SCREENSHOT_ROOT = Path(__file__).parent
+ARTIFACTS_DIR = SCREENSHOT_ROOT / "_artifacts"
+REPORT_PDF = SCREENSHOT_ROOT / "_report.pdf"
+
 
 class ValidationSeverity(str, enum.Enum):
     """Severity levels for a validation issue."""

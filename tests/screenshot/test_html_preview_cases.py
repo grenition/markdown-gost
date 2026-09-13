@@ -21,7 +21,7 @@ from _pipeline import (
     pdf_to_images,
     update_baselines_enabled,
 )
-from conftest import ARTIFACTS_DIR
+from _pipeline import ARTIFACTS_DIR
 
 
 @pytest.fixture(scope="session")

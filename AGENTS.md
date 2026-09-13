@@ -34,8 +34,6 @@ make test-in-docker     # full suite inside the test image
 4. Images and logos are references (paths/URLs/storage keys), never
    inline payloads.
 5. Tests before implementation; unit + lint + typecheck green before done.
-6. `skills/markdown-gost/syntax.md` must stay identical to
-   `skills/markdown-gost/syntax.md` (enforced by a unit test).
 
 ## Style
 

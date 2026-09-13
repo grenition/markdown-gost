@@ -20,7 +20,7 @@ from _pipeline import (
     update_baselines_enabled,
 )
 from _validators.docx import validate_docx
-from conftest import ARTIFACTS_DIR
+from _pipeline import ARTIFACTS_DIR
 from PIL import Image
 
 
