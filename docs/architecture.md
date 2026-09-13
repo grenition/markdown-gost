@@ -47,7 +47,7 @@ markdown-gost is a Markdown → GOST document compiler with two renderers
 | `preview/` | second renderer over the same layout engine: `build_preview_model()` → serializable `PreviewDocument`, `render_preview_html()` → chunked HTML |
 | `output/pdf_writer.py` | thin XML-RPC client to a co-resident unoserver (LibreOffice). No HTTP server of its own |
 | `import_/` | DOCX/PDF → Markdown: pandoc runner + semantic postprocessors (captions, headings, listings, tables), image extraction into storage |
-| `storage/` | image backend abstraction: filesystem or S3 (`markdown-gost[s3]`), resolved from `STORAGE_BACKEND` |
+| `storage/` | image backend protocol + built-in filesystem storage; services inject their own `Storage` implementations (object stores etc.) |
 | `config/` | pydantic config schema + YAML presets (`default`, `gost-7-32-2017`, `mirea-practice`); no GOST rule is hardcoded |
 | `templates/` | parameterized document skeletons (registry + JSON-schema-driven params), e.g. `titlepage-mirea` — a standard Russian university title page |
 | `cli/` | Click CLI: `convert`, `validate`, `import` |
@@ -65,9 +65,10 @@ markdown-gost is a Markdown → GOST document compiler with two renderers
   Docker image, started by `docker/entrypoint.sh`), spoken to over
   XML-RPC on loopback.
 - **Images via storage references, never inline.** Markdown references
-  images by filesystem path or S3 URL; the converter pulls them through the
-  `storage` abstraction. This keeps API payloads small and enables
-  anonymous, storage-backed services like EasyGOST.
+  images by filesystem path (or an object key, when the integrating
+  service injects its own `Storage` implementation); the converter pulls
+  them through the `storage` abstraction. This keeps payloads small and
+  works for storage-backed services.
 - **Config over hardcoding.** Every visual rule lives in YAML config with
   presets; institutional variants are new preset files, not code.
 - **Fonts are measured, not assumed.** `render/paragraph_sizer.py`
@@ -78,7 +79,7 @@ markdown-gost is a Markdown → GOST document compiler with two renderers
 
 1. `tests/unit/` — parser, renderables, config, preview model (fast).
 2. `tests/integration/` — real conversion pipelines; unoserver tests skip
-   when the server is unreachable, S3 tests need `S3_ENDPOINT`.
+   when the server is unreachable.
 3. `tests/import/{golden,roundtrip,smoke}/` — import fixtures with
    regenerate switches (`MARKDOWN_GOST_UPDATE_IMPORT_GOLDEN=1`).
 4. `tests/screenshot/` — the merge gate: every case renders DOCX → PDF →

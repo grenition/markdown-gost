@@ -8,24 +8,18 @@ import pytest
 
 from markdown_gost.storage import (
     FilesystemStorage,
-    S3Storage,
     StorageError,
     get_storage,
 )
 
-_S3_VARS = (
+_ENV_VARS = (
     "STORAGE_BACKEND",
     "STORAGE_FS_ROOT",
-    "S3_BUCKET",
-    "S3_ENDPOINT",
-    "S3_ACCESS_KEY",
-    "S3_SECRET_KEY",
-    "S3_REGION",
 )
 
 
 def _clear(monkeypatch: pytest.MonkeyPatch) -> None:
-    for var in _S3_VARS:
+    for var in _ENV_VARS:
         monkeypatch.delenv(var, raising=False)
 
 
@@ -48,22 +42,10 @@ def test_storage_fs_root_overrides_default(
     assert storage.base_dir == other
 
 
-def test_s3_backend(monkeypatch: pytest.MonkeyPatch):
+def test_object_store_backends_are_not_builtin(monkeypatch: pytest.MonkeyPatch):
     _clear(monkeypatch)
     monkeypatch.setenv("STORAGE_BACKEND", "s3")
-    monkeypatch.setenv("S3_BUCKET", "markdown-gost")
-    monkeypatch.setenv("S3_ENDPOINT", "http://localhost:9000")
-    monkeypatch.setenv("S3_ACCESS_KEY", "k")
-    monkeypatch.setenv("S3_SECRET_KEY", "s")
-    storage = get_storage()
-    assert isinstance(storage, S3Storage)
-    assert storage.bucket == "markdown-gost"
-
-
-def test_s3_without_required_env_raises(monkeypatch: pytest.MonkeyPatch):
-    _clear(monkeypatch)
-    monkeypatch.setenv("STORAGE_BACKEND", "s3")
-    with pytest.raises(StorageError):
+    with pytest.raises(StorageError, match="inject a custom Storage"):
         get_storage()
 
 

@@ -20,8 +20,7 @@ markdown-gost convert paper.md -o paper.docx
 - **Templates** — reusable document skeletons (e.g. a standard Russian
   university title page) parameterized from Markdown.
 - **HTML preview** — a second renderer over the same layout engine:
-  page-accurate, chunked, browser-ready. Used by the
-  [EasyGOST](https://github.com/grenition/docs-platform) web editor.
+  page-accurate, chunked, browser-ready — ideal for web editors.
 - **Import back** — `markdown-gost import` converts existing DOCX/PDF files
   into the extended Markdown (via pandoc + a semantic postprocessor).
 - **Zero services for DOCX** — the core pipeline is a plain Python library;
@@ -42,8 +41,11 @@ Optional extras:
 
 ```bash
 pipx install "markdown-gost[pdf]"   # + unoserver tooling for PDF output
-pipx install "markdown-gost[s3]"    # + S3 image storage (boto3)
 ```
+
+Object stores are not bundled: implement the `Storage` protocol and pass
+your implementation to the conversion APIs (see
+[docs/architecture.md](docs/architecture.md)).
 
 PDF conversion additionally requires a running
 [unoserver](https://github.com/unoconv/unoserver) instance

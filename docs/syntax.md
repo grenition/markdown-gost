@@ -70,8 +70,9 @@ after the caption:
 ```
 
 Sizes accept `%`, `cm`, `mm`, `pt`, `px`, `in`, `auto`; a single dimension
-preserves aspect ratio. Images are referenced by filesystem path or storage
-(S3) URL — never inlined into request payloads.
+preserves aspect ratio. Images are referenced by filesystem path — never
+inlined into request payloads. Integrating services can resolve other
+reference kinds by injecting a custom `Storage` implementation.
 
 ## Listings
 

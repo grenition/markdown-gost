@@ -8,9 +8,9 @@
 #             (default target: plain `docker build .` yields the CLI image)
 #
 # The image is dual-purpose: OSS users get a fully-working converter out of
-# the box (PDF included), and downstream services (e.g. the EasyGOST
-# platform converter-service) use it as a base image so the engine, fonts
-# and LibreOffice stay in rendering parity with CI.
+# the box (PDF included), and downstream conversion services use it as a
+# base image so the engine, fonts and LibreOffice stay in rendering parity
+# with CI.
 
 ARG PYTHON_BASE=python:3.13.15-slim-bookworm@sha256:ed86c82274b3c69b52fb5820f358f0bd7df0b603332063cb5c6e32bd220c3e6e
 
