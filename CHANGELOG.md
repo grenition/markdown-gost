@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v0.2.2 (2026-09-13)
+
+### Bug Fixes
+
+- **ci**: Log in to GHCR before pushing the runtime image
+  ([`17fe504`](https://github.com/grenition/markdown-gost/commit/17fe5047172fc90242700cb1d28254257e0a32a3))
+
+The rewritten publish workflow dropped the registry login, so the image push failed with an
+  anonymous-token 403. Image tags now use the bare version (0.2.x) instead of the v-prefixed git
+  tag.
+
+
 ## v0.2.1 (2026-09-13)
 
 ### Bug Fixes
