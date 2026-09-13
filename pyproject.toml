@@ -1,6 +1,6 @@
 [project]
 name = "markdown-gost"
-version = "0.1.0"
+version = "0.2.0"
 description = "Markdown to GOST 7.32 DOCX/PDF converter with an HTML preview engine"
 authors = [{ name = "Arseniy Mikheev" }]
 license = "MIT"
