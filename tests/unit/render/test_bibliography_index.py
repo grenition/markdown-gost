@@ -7,7 +7,7 @@ from markdown_gost.core.ast import nodes as ast
 from markdown_gost.render.bibliography import BibliographyIndex
 
 
-def _config(yaml: str = "preset: default\n"):
+def _config(yaml: str = "preset: gost-7-32-2017\n"):
     return load_config_from_string(yaml)
 
 
@@ -75,7 +75,7 @@ def test_missing_source_raises() -> None:
 
 
 def test_input_order_can_be_selected() -> None:
-    cfg = _config("preset: default\noverrides:\n  bibliography:\n    order: input\n")
+    cfg = _config("preset: gost-7-32-2017\noverrides:\n  bibliography:\n    order: input\n")
     doc = ast.Document(
         children=[
             ast.Paragraph(children=[ast.Citation(key="b"), ast.Citation(key="a")]),

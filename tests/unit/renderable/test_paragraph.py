@@ -14,7 +14,7 @@ from markdown_gost.renderable.paragraph import Paragraph
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 @pytest.fixture
@@ -47,21 +47,52 @@ def test_emphasis_run_is_italic(document, config):
 
 
 def test_inline_code_uses_configured_font_and_size(document, config):
-    # Дефолт: Consolas, 14pt, italic=False, quotes=False.
+    # Пресет ГОСТ: Courier New 13pt (−1pt от тела 14pt — моноширинный шрифт
+    # не должен читаться крупнее основного), italic=False, quotes=False.
     p = Paragraph(document, config)
     p.add_inline_nodes([ast.InlineCode(code="x = 1")])
     runs = [r for r in p.docx_paragraph.runs if r.text]
     assert runs, "ожидался хотя бы один run с текстом кода"
     code_run = next(r for r in runs if "x" in r.text or "1" in r.text)
-    assert code_run.font.name == "Consolas"
-    assert code_run.font.size == Pt(14)
+    assert code_run.font.name == "Courier New"
+    assert code_run.font.size == Pt(13)
     assert not code_run.italic
     assert "x = 1" in p.docx_paragraph.text
 
 
+def test_inline_code_preset_xml_font_and_size(document, config):
+    """Пресет ГОСТ: rFonts=Courier New, w:sz=26 (13pt в полупунктах)."""
+    from docx.oxml.ns import qn
+
+    p = Paragraph(document, config)
+    p.add_inline_nodes([ast.InlineCode(code="x = 1")])
+    code_run = next(r for r in p.docx_paragraph.runs if r.text and "x" in r.text)
+    rpr = code_run._r.rPr
+    assert rpr is not None, "у run inline-кода должен быть rPr"
+    rfonts = rpr.find(qn("w:rFonts"))
+    assert rfonts is not None
+    assert rfonts.get(qn("w:ascii")) == "Courier New"
+    sz = rpr.find(qn("w:sz"))
+    assert sz is not None
+    assert sz.get(qn("w:val")) == "26"
+
+
+def test_inline_code_run_has_no_color_fill_or_highlight(document, config):
+    """Регрессия ГОСТ: inline-код — чёрный текст, белый фон, без подсветки."""
+    from docx.oxml.ns import qn
+
+    p = Paragraph(document, config)
+    p.add_inline_nodes([ast.InlineCode(code="x = 1")])
+    code_run = next(r for r in p.docx_paragraph.runs if r.text and "x" in r.text)
+    rpr = code_run._r.rPr
+    assert rpr is not None
+    for tag in ("w:highlight", "w:shd", "w:color"):
+        assert rpr.find(qn(tag)) is None, f"{tag} не должен присутствовать на inline-коде"
+
+
 def test_inline_code_quotes_wrap_when_enabled():
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  paragraph:\n    inline_code:\n      quotes: true\n"
+        "preset: gost-7-32-2017\noverrides:\n  paragraph:\n    inline_code:\n      quotes: true\n"
     )
     doc = build_document(cfg)
     p = Paragraph(doc, cfg)
@@ -71,7 +102,7 @@ def test_inline_code_quotes_wrap_when_enabled():
 
 def test_inline_code_italic_override():
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  paragraph:\n    inline_code:\n      italic: true\n"
+        "preset: gost-7-32-2017\noverrides:\n  paragraph:\n    inline_code:\n      italic: true\n"
     )
     doc = build_document(cfg)
     p = Paragraph(doc, cfg)
@@ -82,7 +113,7 @@ def test_inline_code_italic_override():
 
 def test_inline_code_font_and_size_override():
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  paragraph:\n    inline_code:\n"
+        "preset: gost-7-32-2017\noverrides:\n  paragraph:\n    inline_code:\n"
         "      font: Courier New\n      size: 12pt\n"
     )
     doc = build_document(cfg)

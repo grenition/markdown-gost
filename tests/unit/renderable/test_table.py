@@ -27,7 +27,7 @@ def config():
     # включён — manual-mode тесты в этом файле полагаются на ручной разрез
     # таблиц с подписью «Продолжение таблицы N».
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  table:\n"
         "    space_before: 0pt\n"
@@ -45,7 +45,7 @@ def native_config():
     """Default без continuation_break — нативный режим (один <w:tbl>)."""
 
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  table:\n"
         "    space_before: 0pt\n"
@@ -224,7 +224,7 @@ def test_measure_row_height_within_tolerance_for_arial(layout):
     """
 
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  font:\n"
         "    family: Arial\n"
@@ -315,7 +315,7 @@ def test_header_not_bold_when_disabled(document, layout):
     """Override ``table.header_bold: false`` — bold не выставляется."""
 
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  table:\n    header_bold: false\n"
+        "preset: gost-7-32-2017\noverrides:\n  table:\n    header_bold: false\n"
     )
     doc = build_document(cfg)
     node = _make_node([["Hdr1", "Hdr2"], ["1", "2"]])
@@ -347,7 +347,7 @@ def test_font_size_override_applied_to_cell_runs(layout):
     """Override ``table.font_size`` — каждый run ячейки получает w:sz=2*pt."""
 
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  table:\n    font_size: 10pt\n"
+        "preset: gost-7-32-2017\noverrides:\n  table:\n    font_size: 10pt\n"
     )
     doc = build_document(cfg)
     node = _make_node([["Hdr1", "Hdr2"], ["data1", "data2"]])
@@ -628,7 +628,7 @@ def test_space_after_emits_trailing_spacer(document, layout):
     """
 
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  captions:\n    continuation_break: false\n"
         "  table:\n    space_after: 12pt\n"
@@ -665,7 +665,7 @@ def test_space_before_applied_to_caption(document, layout):
     """T013b: ``table.space_before`` накладывается на caption-параграф."""
 
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  captions:\n    continuation_break: false\n"
         "  table:\n    space_before: 18pt\n"
@@ -688,7 +688,7 @@ def test_manual_mode_spacer_only_after_last_chunk(document):
     """
 
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  captions:\n    continuation_break: true\n"
         "  table:\n    space_after: 12pt\n"

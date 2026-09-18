@@ -9,7 +9,7 @@ from markdown_gost.convert import convert
 
 
 def test_convert_docx_renders_citations_and_bibliography_order() -> None:
-    cfg = load_config_from_string("preset: default\n")
+    cfg = load_config_from_string("preset: gost-7-32-2017\n")
     markdown = (
         "# ВВЕДЕНИЕ\n\n"
         "Первая ссылка [@b] и повтор [@b].\n\n"

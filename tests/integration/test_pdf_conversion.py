@@ -29,7 +29,7 @@ SAMPLE_MD = (
 
 
 def _config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 @pytest.fixture(autouse=True)

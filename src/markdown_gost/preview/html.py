@@ -21,7 +21,7 @@ from .model import (
 
 AssetResolver = Callable[[str], str]
 _LINE_HEIGHT_CALIBRATION: dict[tuple[str, int], float] = {
-    ("Times", 14): 16.05,
+    ("Times", 14): 16.13,
     ("Courier", 12): 13.61,
     ("Consolas", 12): 14.75,
     ("Arial", 14): 16.05,
@@ -162,6 +162,11 @@ def _render_block(
         class_name = styles.class_for(block.style)
         marker = escape(block.marker or "")
         separator = escape(block.marker_separator or "")
+        marker_class = "md2gost-list-marker"
+        if block.style.get("marker_width"):
+            # Native-нумерация DOCX: маркер-блок шириной hanging позиционирует
+            # текст точно на левом отступе, аналог таб-стопа на left.
+            marker_class += " md2gost-list-marker--native"
         return (
             f'    <div id="{_id(block.id)}" '
             'class="md2gost-block md2gost-flow-text md2gost-list-item '
@@ -169,7 +174,7 @@ def _render_block(
             f'data-list-type="{escape(block.list_type or "", quote=True)}" '
             f'data-list-level="{escape(str(block.level or 1), quote=True)}" '
             f'data-list-marker="{escape(block.marker or "", quote=True)}">'
-            '<span class="md2gost-list-marker">'
+            f'<span class="{marker_class}">'
             f"{marker}"
             "</span>"
             '<span class="md2gost-list-separator">'
@@ -258,8 +263,13 @@ def _render_title_page_signature_section(section: dict[str, Any]) -> str:
     for row in _layout_items(section, "rows"):
         label = escape(_layout_text(row.get("label")))
         name = escape(_layout_text(row.get("name")))
+        # Зеркало DOCX-шаблона: первая строка каждой группы после первой
+        # получает space_before 6pt (render.py: «Между группами …»).
+        row_class = "md2gost-title-page-signature-row"
+        if row.get("group_start"):
+            row_class += " md2gost-title-page-signature-row--group-start"
         rendered_rows.append(
-            '          <div class="md2gost-title-page-signature-row">'
+            f'          <div class="{row_class}">'
             f'<span class="md2gost-title-page-signature-label">{label}</span>'
             f'<span class="md2gost-title-page-signature-name">{name}</span>'
             "</div>"
@@ -964,11 +974,11 @@ def _render_css(document: PreviewDocument, styles: _StyleRegistry) -> str:
         "      display: flex;",
         "      flex-direction: column;",
         "      height: 100%;",
-        "      padding-top: 80pt;",
+        "      padding-top: 16.1pt;",
         "      padding-bottom: 28pt;",
         "      font-family: Times New Roman, serif;",
         "      font-size: 14pt;",
-        "      line-height: 1.1464;",
+        "      line-height: 1.1521;",
         "    }",
         "    .md2gost-title-page-header,",
         "    .md2gost-title-page-organization,",
@@ -1024,6 +1034,9 @@ def _render_css(document: PreviewDocument, styles: _StyleRegistry) -> str:
         "      grid-template-columns: minmax(0, 1fr) auto;",
         "      column-gap: 12pt;",
         "    }",
+        "    .md2gost-title-page-signature-row--group-start {",
+        "      margin-top: 6pt;",
+        "    }",
         "    .md2gost-title-page-signature-name {",
         "      text-align: right;",
         "    }",
@@ -1039,6 +1052,7 @@ def _render_css(document: PreviewDocument, styles: _StyleRegistry) -> str:
         "      grid-template-columns: auto minmax(0, auto) minmax(0, 1fr) auto;",
         "      align-items: baseline;",
         "      min-width: 0;",
+        "      margin-bottom: 10pt;",
         "      padding-left: calc((var(--md2gost-toc-level) - 1) * 0.75cm);",
         "    }",
         "    .md2gost-toc-number {",
@@ -1068,6 +1082,14 @@ def _render_css(document: PreviewDocument, styles: _StyleRegistry) -> str:
         "    }",
         "    .md2gost-list-item {",
         "      white-space: pre-wrap;",
+        "    }",
+        "    .md2gost-list-marker--native {",
+        "      display: inline-block;",
+        "      min-width: var(--md2gost-marker-width);",
+        "      text-align: left;",
+        "      /* text-indent наследуется: без сброса inline-block маркер",
+        "      применяет висячий отступ родителя второй раз (сдвиг на hanging). */",
+        "      text-indent: 0;",
         "    }",
         "    .md2gost-image-block {",
         "      margin: 0;",
@@ -1231,6 +1253,7 @@ def _style_rule(class_name: str, style: dict[str, JsonPrimitive]) -> str:
         _declaration("text-indent", style.get("indent_first_line")),
         _declaration("margin-left", style.get("margin_left")),
         _declaration("text-indent", style.get("text_indent")),
+        _declaration("--md2gost-marker-width", style.get("marker_width")),
         _declaration("margin-top", style.get("space_before", "0pt")),
         _declaration("margin-bottom", style.get("space_after", "0pt")),
         _declaration("padding-top", style.get("padding_before")),

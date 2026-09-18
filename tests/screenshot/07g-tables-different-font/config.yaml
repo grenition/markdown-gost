@@ -1,4 +1,4 @@
-preset: default
+preset: gost-7-32-2017
 overrides:
   font:
     family: Arial

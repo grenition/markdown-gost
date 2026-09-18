@@ -17,6 +17,7 @@ def test_report_only_returns_failure_when_a_case_cannot_be_calibrated(
         artifacts_dir=tmp_path,
         reference=tmp_path / "reference.json",
         case=None,
+        measure=None,
         report_only=True,
     )
     case = SimpleNamespace(name="broken", html_enabled=True)

@@ -15,6 +15,9 @@ font:
 paragraph:
   alignment: justify
   indent_first_line: 1.25cm
+  inline_code:
+    font: Courier New
+    size: 13pt
 
 headings:
   numbering: continuous
@@ -23,8 +26,7 @@ headings:
     1:
       size: 14pt
       bold: true
-      italic: false
-      uppercase: false
+      uppercase: true
       alignment: left
       space_before: 0pt
       space_after: 0pt
@@ -34,23 +36,17 @@ headings:
     2:
       size: 14pt
       bold: true
-      italic: false
-      uppercase: false
       alignment: left
-      space_before: 0pt
+      space_before: 12pt
       space_after: 0pt
-      page_break_before: false
       keep_with_next: true
       indent_first_line: 1.25cm
     3:
       size: 14pt
       bold: true
-      italic: false
-      uppercase: false
       alignment: left
-      space_before: 0pt
+      space_before: 12pt
       space_after: 0pt
-      page_break_before: false
       keep_with_next: true
       indent_first_line: 1.25cm
   structural:
@@ -76,16 +72,16 @@ captions:
     bold: false
     alignment: center
     format: "{category} {number} — {text}"
-    space_before: 0pt
-    space_after: 0pt
+    space_before: 4pt
+    space_after: 8pt
     line_spacing: 1.0
   table:
     italic: false
     bold: false
     alignment: left
     format: "{category} {number} — {text}"
-    space_before: 0pt
-    space_after: 0pt
+    space_before: 4pt
+    space_after: 2pt
     line_spacing: 1.0
   listing:
     italic: false
@@ -95,30 +91,28 @@ captions:
     space_before: 0pt
     space_after: 0pt
     line_spacing: 1.0
-  continuation_break: false
 
 table:
   repeat_header_on_break: true
-  header_bold: true
   space_before: 0pt
-  space_after: 0pt
+  space_after: 6pt
 
 listing:
   syntax_highlighting: false
   font:
     family: Consolas
-    size: 14pt
+    size: 12pt
   line_spacing: 1.0
   space_before: 0pt
-  space_after: 0pt
+  space_after: 12pt
 
 lists:
+  mode: native
   bullet_marker: "—"
+  bullet_nested_format: "{n})"
   indent_left: 1.25cm
   indent_first_line: 0cm
 
 equation:
-  space_before: 21pt
-  space_after: 21pt
   numbering_alignment: right
   parentheses: true

@@ -13,7 +13,7 @@ def test_docx_forward_links_have_targets_and_thematic_break_is_not_pagination():
                 "См. [](#data) и [метод](#method).\n\n"
                 "# Метод {#method}\n\n"
                 "| A |\n|---|\n| 1 |\n\n: Данные {#data}\n\n---\n",
-                load_config_from_string("preset: default\n"),
+                load_config_from_string("preset: gost-7-32-2017\n"),
             )
         )
     )

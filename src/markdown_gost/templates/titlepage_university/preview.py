@@ -90,9 +90,9 @@ def _signature_sections(params: dict[str, Any]) -> list[dict[str, Any]]:
     return sections
 
 
-def _signature_rows(groups: Any) -> list[dict[str, str]]:
-    rows: list[dict[str, str]] = []
-    for group in groups or []:
+def _signature_rows(groups: Any) -> list[dict[str, str | bool]]:
+    rows: list[dict[str, str | bool]] = []
+    for group_index, group in enumerate(groups or []):
         if not isinstance(group, dict):
             continue
         label = str(group.get("label") or "").strip()
@@ -100,7 +100,10 @@ def _signature_rows(groups: Any) -> list[dict[str, str]]:
         for index, name in enumerate(names):
             text = str(name).strip()
             if text:
-                rows.append({"label": label if index == 0 else "", "name": text})
+                row: dict[str, str | bool] = {"label": label if index == 0 else "", "name": text}
+                if index == 0 and group_index > 0:
+                    row["group_start"] = True
+                rows.append(row)
     return rows
 
 

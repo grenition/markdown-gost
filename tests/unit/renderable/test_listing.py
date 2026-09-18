@@ -19,7 +19,7 @@ def manual_config():
     """captions.continuation_break = true — ручной разрез с подписью «Продолжение»."""
 
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  listing:\n"
         "    space_before: 0pt\n"
@@ -37,7 +37,7 @@ def native_config():
     """Default (continuation_break = false) — один <w:tbl>, Word ломает сам."""
 
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  listing:\n"
         "    space_before: 0pt\n"
@@ -241,7 +241,7 @@ def test_listing_paragraph_uses_configured_mono_font(document, manual_config, la
 
 def test_syntax_highlighting_emits_styled_runs():
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  listing:\n"
         "    syntax_highlighting: true\n"
@@ -279,7 +279,7 @@ def test_syntax_highlighting_emits_styled_runs():
 
 def test_unknown_language_falls_back_to_monochrome():
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  listing:\n"
         "    syntax_highlighting: true\n"
@@ -306,7 +306,7 @@ def test_unknown_language_falls_back_to_monochrome():
 
 def test_no_language_skips_pygments():
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  listing:\n"
         "    syntax_highlighting: true\n"

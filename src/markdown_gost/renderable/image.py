@@ -68,6 +68,9 @@ class Image(Renderable, RequiresNumbering):
         pf.space_before = 0
         pf.space_after = 0
         pf.line_spacing = 1
+        # Картинка не отрывается от подписи под ней при разрыве страницы
+        # (w:keepNext).
+        pf.keep_with_next = True
 
         self._picture: Any | None = None
         self._load_picture()

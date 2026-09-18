@@ -25,7 +25,7 @@ class UnavailableStorage:
 
 
 def _config(overrides: str = "") -> Config:
-    return load_config_from_string(f"preset: default\n{overrides}")
+    return load_config_from_string(f"preset: gost-7-32-2017\n{overrides}")
 
 
 def _parse(rendered: str) -> html.HtmlElement:
@@ -213,6 +213,8 @@ def test_titlepage_template_renders_divider_signature_columns_and_bottom_footer(
                 "authors:\n"
                 "  - label: Student\n"
                 "    names: [Author]\n"
+                "  - label: Group\n"
+                "    names: [Second]\n"
                 "reviewers:\n"
                 "  - label: Reviewer\n"
                 "    names: [Teacher]\n"
@@ -235,8 +237,15 @@ def test_titlepage_template_renders_divider_signature_columns_and_bottom_footer(
     )
     assert signature_labels == [
         "Student",
+        "Group",
         "Reviewer",
     ]
+    # Зеркало DOCX-шаблона: отступ 6pt только у первой строки групп после первой.
+    group_start_labels = root.xpath(
+        "//div[contains(@class, 'md2gost-title-page-signature-row--group-start')]"
+        "/span[1]/text()"
+    )
+    assert group_start_labels == ["Group"]
     footer = root.xpath("string(//footer[contains(@class, 'md2gost-title-page-footer')])")
     assert footer == "МОСКВА 2026 г."
     assert root.xpath(
@@ -246,9 +255,12 @@ def test_titlepage_template_renders_divider_signature_columns_and_bottom_footer(
     assert ".md2gost-page--unnumbered::after" in style
     assert "content: none;" in style
     assert "margin-top: auto;" in style
-    assert "padding-top: 80pt;" in style
+    assert "padding-top: 16.1pt;" in style
+    assert "line-height: 1.1521;" in style
     assert "margin: 18pt 0 6pt;" in style
     assert "margin-top: 96pt;" in style
+    assert ".md2gost-title-page-signature-row--group-start {" in style
+    assert "margin-top: 6pt;" in style
 
 
 def test_content_template_renders_indented_rows_with_leader_and_plain_links() -> None:
@@ -270,6 +282,7 @@ def test_content_template_renders_indented_rows_with_leader_and_plain_links() ->
     assert "color: #000;" in style
     assert "border-bottom: 1px dotted currentColor;" in style
     assert "padding-left: calc((var(--md2gost-toc-level) - 1) * 0.75cm);" in style
+    assert "margin-bottom: 10pt;" in style
 
 
 def test_content_template_toc_uses_configured_flow_text_style_and_calibration() -> None:
@@ -364,7 +377,7 @@ def test_lists_render_with_explicit_markers_and_configured_spacing() -> None:
     assert items[0].get("data-list-type") == "unordered"
     assert items[0].get("data-list-level") == "1"
     assert "font-family: Times New Roman;" in style
-    assert "line-height: 1.5477;" in style
+    assert "line-height: 1.5554;" in style
     assert "margin-left: 2cm;" in style
     assert "text-indent: -0.5cm;" in style
     assert "margin-top: 0pt;" in style
@@ -376,7 +389,7 @@ def test_default_text_leading_offset_matches_docx_line_box_geometry() -> None:
     root = _parse(render_preview_html(build_preview_model("Body\n", _config())))
     style = root.xpath("string(/html/head/style)")
 
-    assert "--md2gost-leading-offset: -5.0375pt;" in style
+    assert "--md2gost-leading-offset: -5.0975pt;" in style
     assert "transform: translateY(var(--md2gost-leading-offset));" in style
 
 
@@ -405,7 +418,53 @@ def test_nested_ordered_lists_preserve_parent_numbering_in_html() -> None:
     assert [
         item.xpath("string(.//span[contains(@class, 'md2gost-list-separator')])")
         for item in items[:4]
-    ] == ["\t", "  ", "  ", "\t"]
+    ] == ["", "", "", ""]
+    assert all(
+        item.xpath("boolean(.//span[contains(@class, 'md2gost-list-marker--native')])")
+        for item in items[:4]
+    )
+    assert "--md2gost-marker-width: 0.75cm;" in root.xpath("string(/html/head/style)")
+
+
+def test_nested_bullet_lists_use_docx_gost_markers_in_html() -> None:
+    markdown = "- One\n    - Deep\n    - Deeper\n- Two\n"
+
+    root = _parse(render_preview_html(build_preview_model(markdown, _config())))
+    items = root.xpath("//div[contains(@class, 'md2gost-list-item')]")
+
+    assert [item.get("data-list-marker") for item in items] == ["—", "1)", "2)", "—"]
+    assert [item.get("data-list-level") for item in items] == ["1", "2", "2", "1"]
+    assert [item.get("data-list-type") for item in items] == ["unordered"] * 4
+    assert [
+        item.xpath("string(.//span[contains(@class, 'md2gost-list-separator')])")
+        for item in items
+    ] == ["", "", "", ""]
+    assert all(
+        item.xpath("boolean(.//span[contains(@class, 'md2gost-list-marker--native')])")
+        for item in items
+    )
+
+
+def test_nested_bullet_lists_keep_bullet_marker_in_inline_mode_in_html() -> None:
+    cfg = _config(
+        "overrides:\n"
+        "  lists:\n"
+        "    mode: inline\n"
+    )
+
+    root = _parse(render_preview_html(build_preview_model("- One\n    - Deep\n- Two\n", cfg)))
+    items = root.xpath("//div[contains(@class, 'md2gost-list-item')]")
+
+    assert [item.get("data-list-marker") for item in items] == ["—", "—", "—"]
+    assert [item.get("data-list-level") for item in items] == ["1", "2", "1"]
+    assert [
+        item.xpath("string(.//span[contains(@class, 'md2gost-list-separator')])")
+        for item in items
+    ] == ["\t", "\t", "\t"]
+    assert not any(
+        item.xpath("boolean(.//span[contains(@class, 'md2gost-list-marker--native')])")
+        for item in items
+    )
 
 
 def test_inline_images_with_unknown_availability_keep_native_lazy_assets() -> None:

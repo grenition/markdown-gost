@@ -26,13 +26,13 @@ _OMATH = f"{{{_OMML_NS}}}oMath"
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 @pytest.fixture
 def config_no_parens():
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  equation:\n"
         "    parentheses: false\n"
@@ -42,7 +42,7 @@ def config_no_parens():
 @pytest.fixture
 def config_left_align():
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  equation:\n"
         "    numbering_alignment: left\n"
@@ -52,7 +52,7 @@ def config_left_align():
 @pytest.fixture
 def config_equation_spacing():
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  equation:\n"
         "    space_before: 6pt\n"
@@ -63,7 +63,7 @@ def config_equation_spacing():
 @pytest.fixture
 def config_font_16pt():
     return load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  font:\n"
         "    size: 16pt\n"

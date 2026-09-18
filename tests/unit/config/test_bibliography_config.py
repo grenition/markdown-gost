@@ -4,7 +4,7 @@ from markdown_gost.config.loader import load_config_from_string
 
 
 def test_bibliography_config_defaults() -> None:
-    cfg = load_config_from_string("preset: default\n")
+    cfg = load_config_from_string("preset: gost-7-32-2017\n")
 
     assert cfg.bibliography.citation_format == "[{n}]"
     assert cfg.bibliography.order == "citation"
@@ -14,7 +14,7 @@ def test_bibliography_config_defaults() -> None:
 
 def test_bibliography_config_override() -> None:
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  bibliography:\n"
         "    citation_format: \"({n})\"\n"

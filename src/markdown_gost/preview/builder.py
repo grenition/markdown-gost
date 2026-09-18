@@ -58,12 +58,13 @@ _DOCX_DEFAULT_PARAGRAPH_SPACE_AFTER = "10pt"
 _TABLE_CELL_PAD_LEFT_DXA = 108
 _TABLE_CELL_PAD_RIGHT_DXA = 108
 _LINE_HEIGHT_CALIBRATION: dict[tuple[str, int], float] = {
-    ("Times", 14): 16.05,
+    ("Times", 14): 16.13,
     ("Courier", 12): 13.61,
     ("Consolas", 12): 14.75,
     ("Arial", 14): 16.05,
 }
 _LISTING_TABLE_OVERHEAD_PT = 5.5
+_TOC_ENTRY_SPACE_AFTER_PT = 10.0
 _CAPTION_LABELS: dict[str, str] = {
     "image": "Рисунок",
     "table": "Таблица",
@@ -110,6 +111,30 @@ class _ImageMetadata:
     @property
     def native_height(self) -> Length:
         return Pt(self.height_px * 72.0 / self.vertical_dpi)
+
+
+@dataclass(frozen=True)
+class _ChainCtx:
+    """Нативная цепочка одного вида — зеркало ``_ChainCtx`` из ``renderable/list.py``.
+
+    Счётчики уровня общие на цепочку (как abstractNum в DOCX): корень даёт
+    свежий словарь, продолжение того же вида делит его ссылкой.
+    """
+
+    kind: str  # "bullet" | "arabic"
+    counters: dict[int, int]
+    rel_level: int  # 0-based уровень этого узла цепочки
+
+    def bump(self) -> int:
+        """Номер следующего пункта: +1 к своему уровню, ресет глубже лежащих."""
+        self.counters[self.rel_level] = self.counters.get(self.rel_level, 0) + 1
+        for deeper in [key for key in self.counters if key > self.rel_level]:
+            self.counters[deeper] = 0
+        return self.counters[self.rel_level]
+
+    def path(self) -> list[int]:
+        """Иерархический путь маркера: счётчики уровней 0..rel_level."""
+        return [self.counters.get(index, 0) for index in range(self.rel_level + 1)]
 
 
 def build_preview_model(
@@ -633,6 +658,7 @@ class _PreviewBuilder:
         *,
         level: int = 1,
         parent_path: list[int] | None = None,
+        parent_ctx: _ChainCtx | None = None,
     ) -> None:
         if parent_path is None and level == 1:
             parent_path = []
@@ -640,13 +666,19 @@ class _PreviewBuilder:
         counter = node.start if node.ordered else 1
         marker_style = _resolve_list_marker_style(node)
         delimiter = node.delimiter if marker_style == "arabic" else None
+        ctx = self._list_chain_ctx(node, marker_style=marker_style, parent_ctx=parent_ctx)
         for item in node.items:
-            if marker_style == "arabic" and parent_path is not None:
-                full_path: list[int] | None = [*parent_path, counter]
+            # Нативная цепочка: номер пункта — счётчик уровня с ресетом глубже.
+            counter = ctx.bump() if ctx is not None else counter
+            if ctx is not None and ctx.kind == "arabic":
+                full_path: list[int] | None = ctx.path()
+            elif marker_style == "arabic" and parent_path is not None:
+                full_path = [*parent_path, counter]
             else:
                 full_path = None
             blocks = _list_item_blocks(item)
             has_para = any(kind == "para" for kind, _ in blocks)
+            bullet_rel_level = ctx.rel_level if ctx is not None and ctx.kind == "bullet" else 0
             if not has_para:
                 self._add_list_paragraph(
                     [],
@@ -655,6 +687,7 @@ class _PreviewBuilder:
                     full_path=full_path,
                     level=clamped_level,
                     delimiter=delimiter,
+                    bullet_rel_level=bullet_rel_level,
                 )
             first_para_emitted = False
             for kind, payload in blocks:
@@ -669,6 +702,7 @@ class _PreviewBuilder:
                             full_path=full_path,
                             level=clamped_level,
                             delimiter=delimiter,
+                            bullet_rel_level=bullet_rel_level,
                         )
                     else:
                         self._add_list_paragraph(
@@ -686,8 +720,33 @@ class _PreviewBuilder:
                         payload,
                         level=level + 1,
                         parent_path=full_path,
+                        parent_ctx=ctx,
                     )
             counter += 1
+
+    def _list_chain_ctx(
+        self,
+        node: ast.List,
+        *,
+        marker_style: str,
+        parent_ctx: _ChainCtx | None,
+    ) -> _ChainCtx | None:
+        """Зеркало ``_chain_ctx`` из ``renderable/list.py``: None → литеральные маркеры."""
+        if self._config.lists.mode != "native" or marker_style in _ALPHABETS_BY_STYLE:
+            return None
+        kind = "bullet" if marker_style == "bullet" else "arabic"
+        if parent_ctx is not None and parent_ctx.kind == kind:
+            # Продолжение цепочки: те же счётчики, глубже на уровень;
+            # start≠1 вложенного узла — startOverride уровня.
+            rel_level = parent_ctx.rel_level + 1
+            if kind == "arabic" and node.start != 1:
+                parent_ctx.counters[rel_level] = node.start - 1
+            return _ChainCtx(kind=kind, counters=parent_ctx.counters, rel_level=rel_level)
+        counters: dict[int, int] = {}
+        if node.ordered and node.start != 1:
+            # w:start корня цепочки на ilvl 0.
+            counters[0] = node.start - 1
+        return _ChainCtx(kind=kind, counters=counters, rel_level=0)
 
     def _add_list_paragraph(
         self,
@@ -698,6 +757,7 @@ class _PreviewBuilder:
         full_path: list[int] | None,
         level: int,
         delimiter: str | None,
+        bullet_rel_level: int = 0,
         continuation: bool = False,
     ) -> None:
         self._list_item_count += 1
@@ -722,8 +782,15 @@ class _PreviewBuilder:
                 counter=counter,
                 full_path=full_path,
                 delimiter=delimiter,
+                bullet_rel_level=bullet_rel_level,
             )
-            separator = "  " if full_path is not None and len(full_path) > 1 else "\t"
+            if self._config.lists.mode == "native":
+                # Зеркало нумерации DOCX: маркер начинается на left − hanging
+                # и занимает ширину hanging, текст — с левого отступа (tab stop
+                # = left). Буквальный таб в HTML попадает на стоп 8 пробелов.
+                separator = ""
+            else:
+                separator = "  " if full_path is not None and len(full_path) > 1 else "\t"
         block = PreviewBlock(
             kind="list_item",
             id=f"list-item-{self._list_item_count}",
@@ -1004,25 +1071,30 @@ class _PreviewBuilder:
 
     def _toc_entry_height(self, block: PreviewBlock, entry: JsonValue) -> Length:
         if not isinstance(entry, dict):
-            return _estimate_text_height(
-                " ",
-                font_family=self._config.font.family,
-                font_size=self._config.font.size,
-                line_spacing=self._config.font.line_spacing,
-                content_width=self._metrics.content_width,
+            return Length(
+                int(_estimate_text_height(
+                    " ",
+                    font_family=self._config.font.family,
+                    font_size=self._config.font.size,
+                    line_spacing=self._config.font.line_spacing,
+                    content_width=self._metrics.content_width,
+                ))
+                + int(Pt(_TOC_ENTRY_SPACE_AFTER_PT))
             )
         level = entry.get("level", 1)
         safe_level = level if isinstance(level, int) and not isinstance(level, bool) else 1
         indentation = parse_length("0.75cm") * max(0, safe_level - 1)
         content_width = Length(max(_MIN_LAYOUT_EMU, int(self._metrics.content_width) - indentation))
         text = " ".join(str(entry.get(field) or "") for field in ("number", "text", "page"))
-        return _estimate_text_height(
+        line_height = _estimate_text_height(
             text,
             font_family=str(block.style.get("font_family", self._config.font.family)),
             font_size=str(block.style.get("font_size", self._config.font.size)),
             line_spacing=_template_line_spacing(block.style, self._config.font.line_spacing),
             content_width=content_width,
         )
+        # Зеркало CSS превью: .md2gost-toc-entry { margin-bottom: 10pt }.
+        return Length(int(line_height) + int(Pt(_TOC_ENTRY_SPACE_AFTER_PT)))
 
     def _insert_toc_continuations(
         self,
@@ -1272,7 +1344,7 @@ def _list_item_style(
     continuation: bool,
 ) -> dict[str, JsonPrimitive]:
     text_indent = "0cm" if continuation else _negative_css_length(config.lists.indent_per_level)
-    return {
+    style: dict[str, JsonPrimitive] = {
         "font_family": config.font.family,
         "font_size": config.font.size,
         "line_spacing": config.font.line_spacing,
@@ -1282,6 +1354,11 @@ def _list_item_style(
         "space_before": "0pt",
         "space_after": "0pt",
     }
+    if config.lists.mode == "native" and not continuation:
+        # Ширина блока маркера = hanging (смещение первой строки), как в
+        # нумерации DOCX: маркер на left − hanging, текст на left.
+        style["marker_width"] = config.lists.indent_per_level
+    return style
 
 
 def _table_style(config: Config, *, table_layout: str) -> dict[str, JsonPrimitive]:
@@ -2272,8 +2349,18 @@ def _format_list_marker(
     counter: int,
     full_path: list[int] | None,
     delimiter: str | None,
+    bullet_rel_level: int = 0,
 ) -> str:
     if marker_style == "bullet":
+        # GOST-маппинг DOCX-рендера: L1 — bullet_marker, глубже в режиме
+        # native — bullet_nested_format с локальным счётчиком уровня;
+        # в режиме inline все уровни — bullet_marker.
+        if config.lists.mode == "native" and bullet_rel_level >= 1:
+            fmt = config.lists.bullet_nested_format
+            try:
+                return fmt.format(n=counter)
+            except (KeyError, IndexError):
+                return fmt
         return config.lists.bullet_marker
     if marker_style in _ALPHABETS_BY_STYLE:
         return _format_alpha_marker(

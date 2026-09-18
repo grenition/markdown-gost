@@ -122,14 +122,14 @@ def test_convert_uses_explicit_config(runner: CliRunner, tmp_path: Path) -> None
     md = tmp_path / "in.md"
     md.write_text("# Hi\n", encoding="utf-8")
     cfg = tmp_path / "cfg.yaml"
-    cfg.write_text("preset: default\n", encoding="utf-8")
+    cfg.write_text("preset: gost-7-32-2017\n", encoding="utf-8")
 
     with patch("markdown_gost.cli.__main__.convert_pipeline", return_value=b"X") as m:
         result = runner.invoke(cli, ["convert", str(md), "--config", str(cfg)])
 
     assert result.exit_code == 0, result.output
     cfg_arg = m.call_args.kwargs.get("config") or m.call_args.args[1]
-    assert cfg_arg.preset == "default"
+    assert cfg_arg.preset == "gost-7-32-2017"
 
 
 def test_convert_unknown_preset_returns_user_error_exit_1(
@@ -144,6 +144,54 @@ def test_convert_unknown_preset_returns_user_error_exit_1(
 
     assert result.exit_code == 1, result.output
     assert "nonexistent" in (result.stdout + result.stderr).lower()
+
+
+def test_convert_config_accepts_preset_name(
+    runner: CliRunner, tmp_path: Path
+) -> None:
+    md = tmp_path / "in.md"
+    md.write_text("# Hi\n", encoding="utf-8")
+
+    with patch("markdown_gost.cli.__main__.convert_pipeline", return_value=b"X") as m:
+        result = runner.invoke(
+            cli, ["convert", str(md), "--config", "gost-7-32-2017"]
+        )
+
+    assert result.exit_code == 0, result.output
+    cfg_arg = m.call_args.kwargs.get("config") or m.call_args.args[1]
+    assert cfg_arg.preset == "gost-7-32-2017"
+
+
+@pytest.mark.parametrize("command", ["convert", "validate"])
+def test_config_unknown_name_lists_presets_exit_1(
+    runner: CliRunner, tmp_path: Path, command: str
+) -> None:
+    md = tmp_path / "in.md"
+    md.write_text("x", encoding="utf-8")
+
+    result = runner.invoke(cli, [command, str(md), "--config", "nope"])
+
+    assert result.exit_code == 1, result.output
+    out = result.stdout + result.stderr
+    assert "nope" in out
+    assert "gost-7-32-2017" in out
+    assert "Traceback" not in out
+
+
+@pytest.mark.parametrize("command", ["convert", "validate"])
+def test_config_nonexistent_path_is_clean_user_error(
+    runner: CliRunner, tmp_path: Path, command: str
+) -> None:
+    md = tmp_path / "in.md"
+    md.write_text("x", encoding="utf-8")
+    missing = tmp_path / "missing.yaml"
+
+    result = runner.invoke(cli, [command, str(md), "--config", str(missing)])
+
+    assert result.exit_code == 1, result.output
+    out = result.stdout + result.stderr
+    assert "missing.yaml" in out
+    assert "Traceback" not in out
 
 
 def test_convert_missing_input_returns_usage_error_exit_2(
@@ -197,6 +245,18 @@ def test_validate_unknown_preset_returns_exit_1(
     assert "doesnotexist" in (result.stdout + result.stderr).lower()
 
 
+def test_validate_config_accepts_preset_name(
+    runner: CliRunner, tmp_path: Path
+) -> None:
+    md = tmp_path / "x.md"
+    md.write_text("# Hi\n\nBody.\n", encoding="utf-8")
+
+    result = runner.invoke(cli, ["validate", str(md), "--config", "gost-7-32-2017"])
+
+    assert result.exit_code == 0, result.output
+    assert "preset=gost-7-32-2017" in result.stdout
+
+
 def test_validate_invalid_config_field_returns_exit_1(
     runner: CliRunner, tmp_path: Path
 ) -> None:
@@ -204,7 +264,7 @@ def test_validate_invalid_config_field_returns_exit_1(
     md.write_text("# Hi\n", encoding="utf-8")
     cfg = tmp_path / "cfg.yaml"
     cfg.write_text(
-        "preset: default\noverrides:\n  font:\n    bogus_field: 1\n",
+        "preset: gost-7-32-2017\noverrides:\n  font:\n    bogus_field: 1\n",
         encoding="utf-8",
     )
 

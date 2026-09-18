@@ -197,7 +197,7 @@ class Font(_Strict):
 
 class InlineCode(_Strict):
     font: MonoFontFamily = Field(
-        "Consolas",
+        "Courier New",
         title="Шрифт",
         description="Моноширинный шрифт для inline-кода (`code`)",
         json_schema_extra=_ui("paragraph", 30),
@@ -502,11 +502,31 @@ class Listing(_Strict):
 
 
 class Lists(_Strict):
+    mode: Literal["native", "inline"] = Field(
+        "native",
+        title="Режим маркеров",
+        description=(
+            "native — нумерация Word (numbering.xml): bullet/arabic списки "
+            "как настоящие списки с висячим отступом; inline — литеральные "
+            "маркеры в тексте параграфа"
+        ),
+        json_schema_extra=_ui("lists", 5),
+    )
     bullet_marker: str = Field(
         "—",
         title="Маркер bullet",
         description="Символ для маркированных списков",
         json_schema_extra=_ui("lists", 10),
+    )
+    bullet_nested_format: str = Field(
+        "{n})",
+        title="Формат вложенных bullet",
+        description=(
+            "Шаблон номера уровней 2+ маркированных списков в режиме native "
+            "(плейсхолдер {n}); в режиме inline вложенные уровни используют "
+            "маркер bullet_marker"
+        ),
+        json_schema_extra=_ui("lists", 15),
     )
     numbered_format: str = Field(
         "{n}.",

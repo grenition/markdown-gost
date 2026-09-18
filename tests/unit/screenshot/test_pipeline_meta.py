@@ -8,7 +8,7 @@ from pathlib import Path
 def _write_case(case_dir: Path, meta: str | None) -> None:
     case_dir.mkdir(parents=True, exist_ok=True)
     (case_dir / "case.md").write_text("# hi\n", encoding="utf-8")
-    (case_dir / "config.yaml").write_text("preset: default\n", encoding="utf-8")
+    (case_dir / "config.yaml").write_text("preset: gost-7-32-2017\n", encoding="utf-8")
     (case_dir / "expected.pdf").write_bytes(b"%PDF-1.4 stub")
     if meta is not None:
         (case_dir / "meta.yaml").write_text(meta, encoding="utf-8")

@@ -33,7 +33,7 @@ def _write_case(root: Path, name: str, meta: str | None = None) -> Path:
     case_dir = root / name
     case_dir.mkdir(parents=True)
     (case_dir / "case.md").write_text("# Title\n", encoding="utf-8")
-    (case_dir / "config.yaml").write_text("preset: default\n", encoding="utf-8")
+    (case_dir / "config.yaml").write_text("preset: gost-7-32-2017\n", encoding="utf-8")
     if meta is not None:
         (case_dir / "meta.yaml").write_text(meta, encoding="utf-8")
     return case_dir

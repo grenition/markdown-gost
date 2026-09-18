@@ -45,7 +45,7 @@ class RecordingStorage:
 
 
 def _config(overrides: str = "") -> Config:
-    return load_config_from_string(f"preset: default\n{overrides}")
+    return load_config_from_string(f"preset: gost-7-32-2017\n{overrides}")
 
 
 def test_page_geometry_uses_config_physical_units() -> None:
@@ -1099,7 +1099,7 @@ def test_preview_model_contains_simple_table_rows_cells_and_caption() -> None:
     assert table.style["table_layout"] == "autofit"
     assert table.column_widths is not None
     assert [width.unit for width in table.column_widths] == ["pt", "pt", "pt"]
-    assert round(sum(width.value for width in table.column_widths), 2) == 496.05
+    assert round(sum(width.value for width in table.column_widths), 2) == 467.7
 
 
 def test_preview_model_resolves_mixed_table_widths_from_content_area() -> None:
@@ -1118,8 +1118,8 @@ def test_preview_model_resolves_mixed_table_widths_from_content_area() -> None:
     assert table.column_widths is not None
     assert [width.unit for width in table.column_widths] == ["pt", "pt", "pt"]
     assert table.column_widths[0].value == 85.05
-    assert table.column_widths[1].value == 205.5
-    assert table.column_widths[2].value == 205.5
+    assert table.column_widths[1].value == 191.3
+    assert table.column_widths[2].value == 191.3
 
 
 def test_preview_model_numbers_bare_table_without_caption_text() -> None:
@@ -1311,15 +1311,56 @@ def test_preview_model_contains_unordered_list_items_with_configured_markers() -
     assert blocks[0].style["line_spacing"] == cfg.font.line_spacing
 
 
+def test_preview_model_uses_docx_compatible_markers_for_nested_bullet_lists() -> None:
+    markdown = "- One\n    - Deep\n    - Deeper\n- Two\n"
+
+    model = build_preview_model(markdown, _config(), RecordingStorage())
+
+    list_blocks = [block for block in model.pages[0].blocks if block.kind == "list_item"]
+
+    assert [block.marker for block in list_blocks] == ["—", "1)", "2)", "—"]
+    assert [block.level for block in list_blocks] == [1, 2, 2, 1]
+    assert [block.list_type for block in list_blocks] == ["unordered"] * 4
+    assert [block.marker_separator for block in list_blocks] == ["", "", "", ""]
+    assert {block.style.get("marker_width") for block in list_blocks} == {"0.75cm"}
+
+
+def test_preview_model_nested_bullet_under_ordered_list_is_fresh_level_one() -> None:
+    markdown = "1. A\n    - Deep\n    - Deeper\n2. B\n"
+
+    model = build_preview_model(markdown, _config(), RecordingStorage())
+
+    list_blocks = [block for block in model.pages[0].blocks if block.kind == "list_item"]
+
+    assert [block.marker for block in list_blocks] == ["1.", "—", "—", "2."]
+
+
+def test_preview_model_nested_bullets_use_bullet_marker_in_inline_mode() -> None:
+    cfg = _config(
+        "overrides:\n"
+        "  lists:\n"
+        "    mode: inline\n"
+    )
+
+    model = build_preview_model("- One\n    - Deep\n    - Deeper\n- Two\n", cfg, RecordingStorage())
+
+    list_blocks = [block for block in model.pages[0].blocks if block.kind == "list_item"]
+
+    assert [block.marker for block in list_blocks] == ["—", "—", "—", "—"]
+    assert [block.level for block in list_blocks] == [1, 2, 2, 1]
+    assert [block.marker_separator for block in list_blocks] == ["\t", "\t", "\t", "\t"]
+    assert all("marker_width" not in block.style for block in list_blocks)
+
+
 def test_organic_pagination_reserves_docx_page_edge_leading() -> None:
     markdown = "\n".join(f"{index}. Item {index}" for index in range(1, 32))
 
     model = build_preview_model(markdown + "\n", _config(), RecordingStorage())
 
     assert model.total_pages == 2
-    assert len(model.pages[0].blocks) == 30
-    assert model.pages[0].blocks[-1].marker == "30."
-    assert model.pages[1].blocks[0].marker == "31."
+    assert len(model.pages[0].blocks) == 29
+    assert model.pages[0].blocks[-1].marker == "29."
+    assert model.pages[1].blocks[0].marker == "30."
 
 
 def test_preview_model_uses_docx_compatible_ordered_markers_for_nested_lists() -> None:
@@ -1342,12 +1383,8 @@ def test_preview_model_uses_docx_compatible_ordered_markers_for_nested_lists() -
         "а)",
         "б)",
     ]
-    assert [block.marker_separator for block in list_blocks[:4]] == [
-        "\t",
-        "  ",
-        "  ",
-        "\t",
-    ]
+    assert [block.marker_separator for block in list_blocks[:4]] == ["", "", "", ""]
+    assert [block.style.get("marker_width") for block in list_blocks[:4]] == ["0.75cm"] * 4
     assert [block.level for block in list_blocks[:4]] == [1, 2, 2, 1]
     assert list_blocks[1].style["margin_left"] == "2cm"
     assert list_blocks[3].marker == "2."

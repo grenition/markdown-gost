@@ -25,7 +25,7 @@ FIXTURES = Path(__file__).parent / "_fixtures"
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 @pytest.fixture
@@ -308,7 +308,7 @@ def test_caption_honors_config_overrides():
 
     config = load_config_from_string(
         """
-preset: default
+preset: gost-7-32-2017
 overrides:
   captions:
     image:
@@ -339,7 +339,7 @@ def test_caption_applies_space_before_from_spec():
     """
 
     config = load_config_from_string(
-        "preset: default\noverrides:\n  captions:\n    image:\n      space_before: 6pt\n"
+        "preset: gost-7-32-2017\noverrides:\n  captions:\n    image:\n      space_before: 6pt\n"
     )
     document = build_document(config)
     cap = Caption(document, config, category="image", number=1, text="x")
@@ -352,7 +352,7 @@ def test_caption_applies_space_after_from_spec():
     """T013b: ``CaptionStyle.space_after`` транслируется в paragraph_format."""
 
     config = load_config_from_string(
-        "preset: default\noverrides:\n  captions:\n    image:\n      space_after: 12pt\n"
+        "preset: gost-7-32-2017\noverrides:\n  captions:\n    image:\n      space_after: 12pt\n"
     )
     document = build_document(config)
     cap = Caption(document, config, category="image", number=1, text="x")
@@ -364,7 +364,7 @@ def test_caption_zero_spacing_when_overridden():
     """Override ``space_before/after`` = 0pt → 0 EMU."""
 
     config = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  captions:\n"
         "    image:\n"
@@ -378,9 +378,13 @@ def test_caption_zero_spacing_when_overridden():
     assert int(pf.space_after) == 0
 
 
-def test_caption_does_not_set_line_spacing_when_unset(document, config):
-    """Legacy default: caption line spacing inherits from the body/Normal style."""
+def test_caption_does_not_set_line_spacing_when_unset():
+    """Caption line spacing inherits from the body/Normal style when unset."""
 
+    from markdown_gost.config.schema import Config
+
+    config = Config(preset="gost-7-32-2017")
+    document = build_document(config)
     cap = Caption(document, config, category="image", number=1, text="x")
     pf = cap.docx_paragraph.paragraph_format
     spacing = _spacing_attrs(cap.docx_paragraph)
@@ -391,7 +395,7 @@ def test_caption_does_not_set_line_spacing_when_unset(document, config):
 
 def test_caption_applies_line_spacing_from_spec():
     config = load_config_from_string(
-        "preset: default\noverrides:\n  captions:\n    image:\n      line_spacing: 1.0\n"
+        "preset: gost-7-32-2017\noverrides:\n  captions:\n    image:\n      line_spacing: 1.0\n"
     )
     document = build_document(config)
     cap = Caption(document, config, category="image", number=1, text="x")
@@ -402,8 +406,8 @@ def test_caption_applies_line_spacing_from_spec():
     assert spacing.get(qn("w:lineRule")) == "auto"
 
 
-def test_mirea_image_caption_is_italic_and_single_spaced(storage, layout):
-    config = load_config_from_string("preset: mirea-practice\n")
+def test_gost_image_caption_is_single_spaced_with_air_after(storage, layout):
+    config = load_config_from_string("preset: gost-7-32-2017\n")
     doc = build_document(config)
     node = ast.Image(src="sample.png", alt="Длинная подпись")
     image = Image(doc, config, node, storage)
@@ -414,16 +418,15 @@ def test_mirea_image_caption_is_italic_and_single_spaced(storage, layout):
     assert cap_para.paragraph_format.line_spacing == 1.0
     assert spacing.get(qn("w:line")) == "240"
     assert spacing.get(qn("w:lineRule")) == "auto"
-    runs = [r for r in cap_para.runs if r.text]
-    assert runs
-    assert all(r.italic for r in runs)
+    # Фикс «приклеенных» подписей: отступ после подписи картинки ненулевой.
+    assert int(cap_para.paragraph_format.space_after) == 101600  # 8pt
 
 
 def test_image_caption_inherits_image_spacing(document, storage, layout):
     """T013b: ``captions.image.space_after`` накладывается на параграф подписи картинки."""
 
     config = load_config_from_string(
-        "preset: default\noverrides:\n  captions:\n    image:\n      space_after: 6pt\n"
+        "preset: gost-7-32-2017\noverrides:\n  captions:\n    image:\n      space_after: 6pt\n"
     )
     doc = build_document(config)
     node = ast.Image(src="sample.png", alt="x")

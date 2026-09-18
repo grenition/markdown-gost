@@ -80,20 +80,7 @@ def run_roundtrip(case: CaseInputs, tmp_path: Path) -> RoundtripResult:
 # Cases that are known to break structural counts after a roundtrip. Keep
 # this list small (≤2) — adding a third entry should prompt a postprocessor
 # fix, not another exemption.
-KNOWN_BROKEN: dict[str, str] = {
-    # T046 end-to-end cases for raw-HTML tables: the source ``case.md`` is
-    # the *result* of running the postprocessor on a fixture pandoc output,
-    # so a second roundtrip would have to losslessly preserve a flattened
-    # pipe-table that originally encoded ``colspan``/``rowspan``. Image
-    # references inside flat cells get lost on the second pandoc pass —
-    # this is the documented lossy import contract (ADR-0006), not a
-    # converter bug. Coverage for the T046 path lives in the unit tests
-    # and the screenshot harness (cases 06d/06e/06f/06g).
-    "06g-import-mirea-titlepage": (
-        "T046 end-to-end fixture — images inside flat cells don't survive a "
-        "second docx→pandoc roundtrip; lossy by design (ADR-0006)"
-    ),
-}
+KNOWN_BROKEN: dict[str, str] = {}
 
 
 __all__ = [

@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.ns import qn
-from docx.shared import Cm, Pt
+from docx.shared import Cm, Mm, Pt
 
 from markdown_gost.config.loader import load_config_from_string
 from markdown_gost.render.document_factory import build_document
@@ -13,7 +13,7 @@ from markdown_gost.render.document_factory import build_document
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 def test_returns_docx_document(config):
@@ -31,13 +31,13 @@ def test_page_size_a4_portrait(config):
     assert abs(section.page_height - Cm(29.7)) <= _TWIP_TOLERANCE
 
 
-def test_page_margins_match_default_preset(config):
+def test_page_margins_match_gost_preset(config):
     document = build_document(config)
     section = document.sections[0]
-    assert abs(section.top_margin - Cm(2)) <= _TWIP_TOLERANCE
-    assert abs(section.bottom_margin - Cm(1.25)) <= _TWIP_TOLERANCE
-    assert abs(section.left_margin - Cm(2.5)) <= _TWIP_TOLERANCE
-    assert abs(section.right_margin - Cm(1)) <= _TWIP_TOLERANCE
+    assert abs(section.top_margin - Mm(20)) <= _TWIP_TOLERANCE
+    assert abs(section.bottom_margin - Mm(20)) <= _TWIP_TOLERANCE
+    assert abs(section.left_margin - Mm(30)) <= _TWIP_TOLERANCE
+    assert abs(section.right_margin - Mm(15)) <= _TWIP_TOLERANCE
 
 
 def test_normal_style_font_and_size(config):
@@ -71,7 +71,7 @@ def test_heading_1_uppercase_caps_marker(config):
 
 def test_heading_uppercase_false_removes_existing_caps_marker():
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  headings:\n"
         "    levels:\n"

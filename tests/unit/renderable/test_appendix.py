@@ -14,7 +14,7 @@ from markdown_gost.renderable.base import RenderedInfo
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 def test_appendix_renders_centered_uppercase_heading_with_page_break(config) -> None:

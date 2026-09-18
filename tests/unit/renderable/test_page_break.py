@@ -14,7 +14,7 @@ from markdown_gost.renderable.page_break import PageBreak
 
 @pytest.fixture
 def document():
-    return build_document(load_config_from_string("preset: default\n"))
+    return build_document(load_config_from_string("preset: gost-7-32-2017\n"))
 
 
 def test_page_break_creates_w_br_page(document):

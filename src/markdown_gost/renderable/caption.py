@@ -65,6 +65,10 @@ class Caption(Renderable):
         self._docx_paragraph.alignment = _ALIGNMENT_MAP[self._spec.alignment]
         pf = self._docx_paragraph.paragraph_format
         pf.first_line_indent = 0
+        # Подпись над объектом (таблица/листинг) не отрывается от его первой
+        # строки при разрыве страницы (w:keepNext).
+        if self._before:
+            pf.keep_with_next = True
         # T013b: spacing берём из CaptionStyle. Дефолт ``"0pt"`` сохраняет
         # старое поведение. Для caption-ов *перед* блоком (table) Table-
         # renderable дополнительно накладывает ``table.space_before`` поверх —

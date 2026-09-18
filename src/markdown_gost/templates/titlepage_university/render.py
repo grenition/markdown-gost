@@ -59,7 +59,7 @@ def _load_logo(reference: object) -> bytes | None:
         data = path.read_bytes()
     if len(data) > _LOGO_MAX_BYTES:
         raise ValueError(f"logo exceeds {_LOGO_MAX_BYTES} bytes: {ref!r}")
-    return data
+    return bytes(data)
 
 
 def _add_centered_paragraph(

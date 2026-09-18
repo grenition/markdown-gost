@@ -8,7 +8,7 @@ def test_preview_supports_references_sources_and_appendix_scope():
         "# Метод\n\n# Данные {.appendix #data}\n\n## Значения\n\n"
         "$$x=1$$\n\n# Итоги\n\n"
         "::: {.bibliography}\n- id: book\n  text: Учебник\n:::\n",
-        Config(preset="default"),
+        Config(preset="gost-7-32-2017"),
     )
     blocks = [block for page in model.pages for block in page.blocks]
     assert blocks[0].text == "См. Приложение А и [1]."
@@ -21,7 +21,7 @@ def test_preview_supports_references_sources_and_appendix_scope():
 def test_preview_custom_ids_and_thematic_break():
     model = build_preview_model(
         "# Метод {#method}\n\n| A |\n|---|\n| 1 |\n\n: Данные {#data}\n\n---\n",
-        Config(preset="default"),
+        Config(preset="gost-7-32-2017"),
     )
     blocks = [block for page in model.pages for block in page.blocks]
     assert {"method", "data"} <= {block.id for block in blocks}

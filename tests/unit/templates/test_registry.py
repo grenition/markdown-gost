@@ -37,7 +37,7 @@ def _stub_render(params: dict[str, Any], parent: TemplateContext) -> Renderable:
 
 @pytest.fixture
 def context():
-    config = load_config_from_string("preset: default\n")
+    config = load_config_from_string("preset: gost-7-32-2017\n")
     document = build_document(config)
     return TemplateContext(document=document, config=config)
 

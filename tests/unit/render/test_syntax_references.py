@@ -13,7 +13,7 @@ def test_forward_references_share_numbering_with_appendix_scopes():
             "# Материалы {.appendix #app}\n\n"
             "$$x=1$$\n{#eq}\n\n# Итоги {#end}\n"
         ),
-        Config(preset="default"),
+        Config(preset="gost-7-32-2017"),
     )
     paragraph = document.children[0]
     links = [node for node in paragraph.children if isinstance(node, ast.Link)]
@@ -31,4 +31,4 @@ def test_missing_automatic_reference_fails():
     import pytest
 
     with pytest.raises(ValueError, match="missing"):
-        prepare_document(parse("[](#missing)"), Config(preset="default"))
+        prepare_document(parse("[](#missing)"), Config(preset="gost-7-32-2017"))

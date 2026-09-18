@@ -16,7 +16,7 @@ from markdown_gost.renderable.heading import Heading
 
 @pytest.fixture
 def config():
-    return load_config_from_string("preset: default\n")
+    return load_config_from_string("preset: gost-7-32-2017\n")
 
 
 @pytest.fixture
@@ -140,7 +140,7 @@ def test_numbered_h2_has_dotted_prefix_no_duplicate(document, config):
 
 def test_numbering_none_strips_numpr_and_no_prefix(document):
     cfg = load_config_from_string(
-        "preset: default\noverrides:\n  headings:\n    numbering: none\n"
+        "preset: gost-7-32-2017\noverrides:\n  headings:\n    numbering: none\n"
     )
     doc = build_document(cfg)
     n = Numberer()
@@ -203,7 +203,7 @@ def test_unnumbered_h2_keeps_legacy_numbering_slot(document, config):
 
 def test_numbered_h1_page_break_uses_level_config(document):
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  headings:\n"
         "    levels:\n"
@@ -242,7 +242,7 @@ def test_appendix_heading_does_not_force_extra_page_break(document, config):
 
 def test_structural_h1_page_break_uses_structural_config(document):
     cfg = load_config_from_string(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  headings:\n"
         "    structural:\n"

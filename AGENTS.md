@@ -3,6 +3,8 @@
 ## Map
 
 - `src/markdown_gost/` — package (src-layout; tests run against the installed copy)
+- `src/markdown_gost/preview/` — HTML preview; **mirrors DOCX rendering semantics**
+  (list markers, caption spacing, inline-code style) — see Rule 6
 - `skills/markdown-gost/syntax.md` — normative syntax contract **and** executable corpus
 - `tests/` — `unit/` fast, `integration/` (unoserver/pandoc), `import/` (golden, roundtrip), `screenshot/` pixel gate
 - `docker/` — image (Dockerfile + entrypoint with unoserver)
@@ -15,6 +17,7 @@ poetry install
 make test-unit          # fast
 make test-integration   # needs unoserver + pandoc (or make test-in-docker)
 make test-screenshot    # pixel-diff merge gate
+make test-html-calibration  # HTML preview parity vs DOCX baselines (docker-able too)
 make lint typecheck
 make test-in-docker     # full suite inside the test image
 ```
@@ -34,6 +37,12 @@ make test-in-docker     # full suite inside the test image
 4. Images and logos are references (paths/URLs/storage keys), never
    inline payloads.
 5. Tests before implementation; unit + lint + typecheck green before done.
+6. Preview parity: `preview/builder.py` duplicates rendering decisions (list
+   markers/formats, indents, caption/heading spacing, inline-code style).
+   Any change to `renderable/` or preset layout values must land with the
+   matching preview change in the same commit, and `make
+   test-html-calibration` must pass (or its reference regenerated for
+   deliberate, reviewed changes).
 
 ## Style
 

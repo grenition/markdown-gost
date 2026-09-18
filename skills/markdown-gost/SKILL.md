@@ -15,13 +15,14 @@ Full normative syntax: read `syntax.md` in this skill directory.
 markdown-gost convert input.md -o out.docx
 markdown-gost convert input.md -o out.pdf            # needs unoserver
 markdown-gost convert input.md -o out.docx --config my.yaml
+markdown-gost convert input.md -o out.docx --config gost-7-32-2017
 markdown-gost validate input.md
 markdown-gost import legacy.docx -o imported.md      # needs pandoc >= 2.19
 markdown-gost import legacy.pdf -o imported.md       # needs pandoc + unoserver
 ```
 
-Config: YAML with presets — `default`, `gost-7-32-2017`, `mirea-practice`
-(selected inside the file: `preset: gost-7-32-2017`). PDF needs a running
+Config: `--config` accepts a YAML file or a built-in preset name
+(`gost-7-32-2017`; in YAML: `preset: gost-7-32-2017`). PDF needs a running
 unoserver (`UNOSERVER_HOST`/`UNOSERVER_PORT`, default 127.0.0.1:2003).
 
 ## Syntax cheat sheet

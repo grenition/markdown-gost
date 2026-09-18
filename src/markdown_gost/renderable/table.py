@@ -19,6 +19,9 @@
   ``<w:tblHeader/>`` на строках шапки — Word повторит шапку на новой странице.
 - ``<w:cantSplit/>`` ставится в ``<w:trPr>`` каждой строки, чтобы строка не
   рвалась внутри между страниц.
+- параграфы ячеек шапки несут ``w:keepNext`` — шапка не остаётся одна
+  внизу страницы без первой строки тела (в связке с keepNext подписи
+  блок «подпись + шапка + первая строка» переносится целиком).
 
 Manual page-break (наша подпись «Продолжение таблицы») вынесен отдельной
 задачей T013 (продолжение): требует попаточечного измерения каждой строки
@@ -471,6 +474,10 @@ class Table(Renderable, RequiresNumbering):
         if is_header and self._config.table.header_bold:
             for run in cell_p.runs:
                 run.bold = True
+        # Шапка не отрывается от первого body-row: keepNext на параграфах
+        # ячеек шапки не даёт шапке остаться одной внизу страницы.
+        if is_header:
+            cell_p.paragraph_format.keep_with_next = True
         if self._config.table.font_size is not None:
             cell_font_size = Pt(parse_pt(self._config.table.font_size))
             for run in cell_p.runs:
@@ -752,6 +759,8 @@ class Table(Renderable, RequiresNumbering):
         if spec.line_spacing is not None:
             pf.line_spacing = spec.line_spacing
         pf.page_break_before = True
+        # Подпись продолжения не отрывается от первой строки чанка (w:keepNext).
+        pf.keep_with_next = True
 
         # Применим стиль подписи таблицы (italic/bold/alignment).
         if spec.italic:

@@ -48,7 +48,7 @@ markdown-gost is a Markdown → GOST document compiler with two renderers
 | `output/pdf_writer.py` | thin XML-RPC client to a co-resident unoserver (LibreOffice). No HTTP server of its own |
 | `import_/` | DOCX/PDF → Markdown: pandoc runner + semantic postprocessors (captions, headings, listings, tables), image extraction into storage |
 | `storage/` | image backend protocol + built-in filesystem storage; services inject their own `Storage` implementations (object stores etc.) |
-| `config/` | pydantic config schema + YAML presets (`default`, `gost-7-32-2017`, `mirea-practice`); no GOST rule is hardcoded |
+| `config/` | pydantic config schema + built-in YAML preset (`gost-7-32-2017`); no GOST rule is hardcoded |
 | `templates/` | parameterized document skeletons (registry + JSON-schema-driven params), e.g. `titlepage-university` — a standard Russian university title page |
 | `cli/` | Click CLI: `convert`, `validate`, `import` |
 | `metrics_compat.py` | optional prometheus_client: no-op stand-ins when the service metrics stack is not installed |

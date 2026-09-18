@@ -39,13 +39,15 @@ cp -r skills/markdown-gost ~/.claude/skills/    # or copy into your harness skil
 markdown-gost convert input.md -o out.docx
 markdown-gost convert input.md -o out.pdf                 # needs unoserver
 markdown-gost convert input.md -o out.docx --config my.yaml
+markdown-gost convert input.md -o out.docx --config gost-7-32-2017
 markdown-gost validate input.md
 markdown-gost import legacy.docx -o imported.md           # needs pandoc
 markdown-gost import legacy.pdf -o imported.md            # needs pandoc + unoserver
 ```
 
-Config: YAML with presets (`default`, `gost-7-32-2017`, `mirea-practice`),
-selected inside the file (`preset: gost-7-32-2017`), any field overridable.
+Config: `--config` accepts a YAML file or a built-in preset name
+(`gost-7-32-2017`); inside a YAML file the preset is chosen via
+`preset: gost-7-32-2017`, any field overridable.
 Full schema: `markdown_gost.config.schema.Config.model_json_schema()`.
 
 Preview API:

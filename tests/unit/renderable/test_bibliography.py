@@ -13,7 +13,7 @@ from markdown_gost.renderable.bibliography import Bibliography
 from markdown_gost.renderable.paragraph import Paragraph
 
 
-def _config(yaml: str = "preset: default\n"):
+def _config(yaml: str = "preset: gost-7-32-2017\n"):
     return load_config_from_string(yaml)
 
 
@@ -41,7 +41,7 @@ def test_paragraph_renders_citation_number() -> None:
 
 def test_paragraph_uses_configurable_citation_format() -> None:
     cfg = _config(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  bibliography:\n"
         "    citation_format: \"({n})\"\n"
@@ -80,7 +80,7 @@ def test_bibliography_entries_are_plain_paragraphs_with_marker() -> None:
 
 def test_bibliography_entry_number_format_is_configurable() -> None:
     cfg = _config(
-        "preset: default\n"
+        "preset: gost-7-32-2017\n"
         "overrides:\n"
         "  bibliography:\n"
         "    entry_number_format: \"[{n}]\"\n"

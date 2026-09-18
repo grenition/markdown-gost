@@ -4,8 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
+import subprocess
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from PIL import Image
 from typing import Any
 
 from _html_pipeline import (
@@ -29,6 +35,9 @@ DEFAULT_REFERENCE = SCREENSHOT_ROOT / "html-calibration-reference.json"
 
 def main() -> int:
     args = _parse_args()
+    if args.measure:
+        return _measure_cases(args.measure, args.artifacts_dir.resolve())
+
     runtime = detect_html_runtime()
     if not runtime.available:
         print(f"HTML calibration runtime unavailable: {runtime.reason}")
@@ -125,6 +134,15 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="write all metrics/artifacts without applying regression thresholds",
     )
+    parser.add_argument(
+        "--measure",
+        action="append",
+        metavar="CASE",
+        help=(
+            "print ink-band geometry (rows: y-range + leftmost ink column) for "
+            "existing artifacts of CASE (repeatable); no rendering, no gates"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -148,6 +166,117 @@ def _calibrate_case(
         actual_pages,
         artifact_dir,
     )
+
+
+def _measure_cases(names: list[str], artifact_root: Path) -> int:
+    """Print ink-band geometry for existing calibration artifacts.
+
+    Debug helper for parity work: per page, rows of ink grouped into bands
+    with their leftmost/rightmost ink column, for both the PDF oracle and
+    the rendered HTML. Pixel pitch between band tops ≈ line pitch.
+    """
+
+    try:
+        from PIL import Image
+    except ImportError:  # pragma: no cover - debug mode only
+        print("Pillow unavailable: --measure needs PIL")
+        return 2
+    missing = [name for name in names if not (artifact_root / name).exists()]
+    if missing:
+        print("No artifacts for: " + ", ".join(missing))
+        return 2
+    for name in names:
+        dpi = _case_dpi(name)
+        print(f"### {name} (dpi={dpi}; px→pt: ×{72 / dpi:.2f})")
+        for page_dir in sorted((artifact_root / name).glob("page_*")):
+            print(f"== {page_dir.name} ==")
+            for label, png in (
+                ("expected_pdf", page_dir / "expected_pdf.png"),
+                ("actual_html", page_dir / "actual_html.png"),
+            ):
+                if not png.exists():
+                    continue
+                print(f"  [{label}]")
+                for y0, y1, x0, x1 in _ink_bands(Image.open(png)):
+                    print(
+                        f"    y {y0:>4}-{y1:>4} (h={y1 - y0 + 1:>3}) "
+                        f"x {x0:>4}-{x1:>4}"
+                    )
+        pdf = SCREENSHOT_ROOT / name / "expected.pdf"
+        boxes = _pdf_word_boxes(pdf)
+        if boxes:
+            print("  [expected.pdf word boxes, pt]")
+            for x_min, y_min, word in boxes[:40]:
+                print(f"    x={x_min:>7.2f} y={y_min:>7.2f} {word}")
+    return 0
+
+
+def _case_dpi(name: str) -> int:
+    meta = SCREENSHOT_ROOT / name / "meta.yaml"
+    if not meta.exists():
+        return 100
+    match = re.search(r"dpi:\s*(\d+)", meta.read_text(encoding="utf-8"))
+    return int(match.group(1)) if match else 100
+
+
+def _ink_bands(image: Image.Image) -> list[tuple[int, int, int, int]]:
+    gray = image.convert("L")
+    width, height = gray.size
+    data = list(gray.getdata())
+    threshold = 200
+    spans: list[tuple[int, int]] = []
+    band_start: int | None = None
+    gap = 0
+    for y in range(height):
+        if any(data[y * width + x] < threshold for x in range(0, width, 2)):
+            if band_start is None:
+                band_start = y
+            gap = 0
+        elif band_start is not None:
+            gap += 1
+            if gap >= 3:
+                spans.append((band_start, y - gap + 1))
+                band_start = None
+                gap = 0
+    if band_start is not None:
+        spans.append((band_start, height - 1))
+    out: list[tuple[int, int, int, int]] = []
+    for y0, y1 in spans:
+        x_left = next(
+            x
+            for x in range(width)
+            if any(data[y * width + x] < threshold for y in range(y0, y1 + 1))
+        )
+        x_right = next(
+            x
+            for x in range(width - 1, -1, -1)
+            if any(data[y * width + x] < threshold for y in range(y0, y1 + 1))
+        )
+        out.append((y0, y1, x_left, x_right))
+    return out
+
+
+def _pdf_word_boxes(pdf: Path) -> list[tuple[float, float, str]]:
+    if not pdf.exists():
+        return []
+    try:
+        completed = subprocess.run(
+            ["pdftotext", "-bbox", str(pdf), "-"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []
+    if completed.returncode != 0:
+        return []
+    boxes: list[tuple[float, float, str]] = []
+    for match in re.finditer(
+        r'<word xMin="([\d.]+)" yMin="([\d.]+)"[^>]*>([^<]+)</word>',
+        completed.stdout,
+    ):
+        boxes.append((float(match.group(1)), float(match.group(2)), match.group(3)))
+    return boxes
 
 
 def _load_reference(path: Path) -> dict[str, Any]:

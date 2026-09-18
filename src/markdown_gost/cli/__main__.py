@@ -19,15 +19,21 @@ from markdown_gost import __version__
 from markdown_gost.cli.commands.import_cmd import import_command
 from markdown_gost.config.errors import ConfigError
 from markdown_gost.config.loader import load_config_from_path, load_config_from_string
+from markdown_gost.config.presets import available_presets
 from markdown_gost.config.schema import Config
 from markdown_gost.convert import Format
 from markdown_gost.convert import convert as convert_pipeline
 from markdown_gost.core.parser import parse as parse_markdown
 from markdown_gost.storage import get_storage
 
-_DEFAULT_CONFIG = "preset: default\n"
+_DEFAULT_CONFIG = "preset: gost-7-32-2017\n"
 _VALID_FORMATS: tuple[str, ...] = ("docx", "pdf")
 _LOGGER = logging.getLogger("markdown_gost.cli")
+_CONFIG_HELP = (
+    "Path to YAML config (preset + overrides) or a built-in preset name "
+    f"({', '.join(available_presets())}). "
+    "Defaults to the built-in default preset."
+)
 
 
 def _resolve_format(explicit: str | None, output: Path | None) -> Format:
@@ -40,10 +46,23 @@ def _resolve_format(explicit: str | None, output: Path | None) -> Format:
     return "docx"
 
 
-def _load_config(config_path: Path | None) -> Config:
+def _load_config(config_path: str | None) -> Config:
+    """Resolve ``--config``: YAML file path, built-in preset name, or default."""
     if config_path is None:
         return load_config_from_string(_DEFAULT_CONFIG)
-    return load_config_from_path(config_path)
+    path = Path(config_path)
+    if path.is_file():
+        return load_config_from_path(path)
+    if config_path in available_presets():
+        return load_config_from_string(f"preset: {config_path}\n")
+    _unknown_config(config_path)
+
+
+def _unknown_config(value: str) -> NoReturn:
+    _user_error(
+        f"--config {value!r} is neither an existing config file nor a built-in "
+        f"preset (available presets: {', '.join(available_presets())})"
+    )
 
 
 def _user_error(message: str) -> NoReturn:
@@ -84,7 +103,8 @@ def _execute(action: Callable[[], Any]) -> Any:
 def cli(verbose: bool) -> None:
     """markdown-gost — Markdown → DOCX/PDF по ГОСТ.
 
-    Пресет ГОСТа задаётся в YAML-конфиге, не флагом CLI (см. ADR-0004).
+    Пресет ГОСТа задаётся в YAML-конфиге или именем встроенного пресета
+    в ``--config`` (см. ADR-0004).
     """
 
     level = logging.DEBUG if verbose else logging.INFO
@@ -111,9 +131,9 @@ def cli(verbose: bool) -> None:
 @click.option(
     "--config",
     "config_path",
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    type=click.STRING,
     default=None,
-    help="Path to YAML config (preset + overrides). Defaults to built-in default preset.",
+    help=_CONFIG_HELP,
 )
 @click.option(
     "--format",
@@ -125,7 +145,7 @@ def cli(verbose: bool) -> None:
 def convert_command(
     input_path: Path,
     output: Path | None,
-    config_path: Path | None,
+    config_path: str | None,
     fmt: str | None,
 ) -> None:
     """Convert INPUT markdown into the chosen format."""
@@ -164,11 +184,11 @@ def convert_command(
 @click.option(
     "--config",
     "config_path",
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    type=click.STRING,
     default=None,
-    help="Path to YAML config (preset + overrides). Defaults to built-in default preset.",
+    help=_CONFIG_HELP,
 )
-def validate_command(input_path: Path, config_path: Path | None) -> None:
+def validate_command(input_path: Path, config_path: str | None) -> None:
     """Validate INPUT markdown + config without producing output."""
 
     def _do() -> None:
