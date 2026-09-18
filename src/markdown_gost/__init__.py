@@ -1,5 +1,5 @@
 from markdown_gost.convert import convert
 
-__version__ = "0.2.2"
+__version__ = "1.0.0"
 
 __all__ = ["__version__", "convert"]

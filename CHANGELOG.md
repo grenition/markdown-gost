@@ -1,6 +1,41 @@
 # CHANGELOG
 
 
+## v1.0.0 (2026-09-18)
+
+### Chores
+
+- Reference the published 0.2.2 image tag in the docker example
+  ([`1f0ebb3`](https://github.com/grenition/markdown-gost/commit/1f0ebb37b013cab9c02541d53bed55cfa411e081))
+
+### Features
+
+- Single GOST preset, native Word list numbering, preview parity
+  ([`74e2ee0`](https://github.com/grenition/markdown-gost/commit/74e2ee065ab12e014f53f244d0871e1fe9b621fa))
+
+- presets: drop default/mirea-practice, gost-7-32-2017 is the only built-in and the CLI default
+  (base: former default look + GOST 30/15/20/30mm margins, airier caption/heading/table spacing) -
+  cli: --config accepts a built-in preset name or a YAML path; unknown names exit 1 listing
+  available presets (ADR-0004 amended) - lists: native numbering.xml for bullet/arabic lists (fresh
+  abstractNum per list so LibreOffice restarts counters, w:start for literal starts, GOST «—»/1)
+  level mapping via lists.mode + bullet_nested_format); alpha lists stay literal (GOST letter filter
+  not expressible natively) - captions: keepNext on captions/headers/continuations so
+  signature+header+ first row never orphan across page breaks - inline code: Courier New at 13pt in
+  preset (never reads larger than body), quotes option documented - preview: mirror DOCX list chain
+  semantics, fix marker double text-indent, TOC 10pt entry spacing, titlepage
+  padding/line-height/signature groups - tests: list suites rewritten, keepNext/chain/preset
+  coverage added; screenshot baselines + html-calibration reference regenerated for the deliberate
+  rendering changes
+
+BREAKING CHANGE: built-in presets "default" and "mirea-practice" are removed; configs referencing
+  them must switch to "gost-7-32-2017". --config now also accepts preset names.
+
+### Breaking Changes
+
+- Built-in presets "default" and "mirea-practice" are removed; configs referencing them must switch
+  to "gost-7-32-2017". --config now also accepts preset names.
+
+
 ## v0.2.2 (2026-09-13)
 
 ### Bug Fixes
